@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Previous Results - Lovepot.VIP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="slide-down">
+    <h1>LOVEPOT.VIP</h1>
+    <nav class="fade-in">
+      <a href="index.html">Home</a>
+      <a href="today-result.html">Today Result</a>
+      <a href="previous-result.html" class="active">Previous Result</a>
+      <a href="result-file-download.html">Result File Download</a>
+    </nav>
+  </header>
+
+  <section class="result-section fade-in">
+    <h2>Previous Results</h2>
+    <label for="result-date">Select Date:</label>
+    <input type="date" id="result-date" name="result-date">
+    <button onclick="fetchResults()">View Results</button>
+
+    <div id="previous-results">
+      <!-- Results will be displayed here -->
+    </div>
+  </section>
+
+  <footer class="fade-in">
+    <p>© 2025 Lovepot.vip | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    function fetchResults() {
+      const selectedDate = document.getElementById('result-date').value;
+      // Implement AJAX call or other methods to fetch and display results based on selectedDate
+      document.getElementById('previous-results').innerHTML = `<p>Results for ${selectedDate} will be displayed here.</p>`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Result File Download - Lovepot.VIP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="slide-down">
+    <h1>LOVEPOT.VIP</h1>
+    <nav class="fade-in">
+      <a href="index.html">Home</a>
+      <a href="today-result.html">Today Result</a>
+      <a href="previous-result.html">Previous Result</a>
+      <a href="result-file-download.html" class="active">Result File Download</a>
+    </nav>
+  </header>
+
+  <section class="download-section fade-in">
+    <h2>Download Result Files</h2>
+    <label for="download-date">Select Date:</label>
+    <input type="date" id="download-date" name="download-date">
+    <button onclick="downloadFile()">Download</button>
+  </section>
+
+  <footer class="fade-in">
+    <p>© 2025 Lovepot.vip | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    function downloadFile() {
+      const selectedDate = document.getElementById('download-date').value;
+      // Implement file download logic based on selectedDate
+      alert(`Downloading results for ${selectedDate}`);
+    }
+  </script>
+</body>
+</html>
