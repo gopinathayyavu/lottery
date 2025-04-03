@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Today Result - Lovepot.VIP</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
@@ -19,18 +19,51 @@
   </header>
 
   <section class="result-section fade-in">
-    <h2>Today's Results</h2>
-    <div class="draw">
-      <h3>Draw Time: 11:00 AM</h3>
-      <p>1st Prize: <span class="prize">525</span></p>
-      <p>2nd Prize: <span class="prize">25</span></p>
-      <p>3rd Prize: <span class="prize">5</span></p>
+    <h2>🎯 Today's Results</h2>
+
+    <div class="draw-times">
+      <button onclick="showResult('draw1')" class="active">11:00 AM</button>
+      <button onclick="showResult('draw2')">01:00 PM</button>
+      <button onclick="showResult('draw3')">03:00 PM</button>
     </div>
-    <!-- Repeat similar blocks for other draw times -->
+
+    <div id="draw1" class="draw animate-up visible">
+      <h3>Draw Time: 11:00 AM</h3>
+      <p><strong>1st Prize:</strong> <span class="prize">525</span></p>
+      <p><strong>2nd Prize:</strong> <span class="prize">25</span></p>
+      <p><strong>3rd Prize:</strong> <span class="prize">5</span></p>
+    </div>
+
+    <div id="draw2" class="draw animate-up">
+      <h3>Draw Time: 01:00 PM</h3>
+      <p><strong>1st Prize:</strong> <span class="prize">638</span></p>
+      <p><strong>2nd Prize:</strong> <span class="prize">42</span></p>
+      <p><strong>3rd Prize:</strong> <span class="prize">8</span></p>
+    </div>
+
+    <div id="draw3" class="draw animate-up">
+      <h3>Draw Time: 03:00 PM</h3>
+      <p><strong>1st Prize:</strong> <span class="prize">910</span></p>
+      <p><strong>2nd Prize:</strong> <span class="prize">56</span></p>
+      <p><strong>3rd Prize:</strong> <span class="prize">14</span></p>
+    </div>
   </section>
 
   <footer class="fade-in">
     <p>© 2025 Lovepot.vip | All Rights Reserved</p>
   </footer>
+
+  <script>
+    function showResult(id) {
+      const buttons = document.querySelectorAll(".draw-times button");
+      buttons.forEach(btn => btn.classList.remove("active"));
+
+      const draws = document.querySelectorAll(".draw");
+      draws.forEach(draw => draw.classList.remove("visible"));
+
+      document.getElementById(id).classList.add("visible");
+      event.target.classList.add("active");
+    }
+  </script>
 </body>
 </html>
