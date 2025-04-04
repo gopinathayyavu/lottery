@@ -1,13 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Result File Download - Lucky Pot</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .input-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 30px auto 10px;
+      padding: 0 10px;
+    }
+
+    .input-section input {
+      padding: 10px 16px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      flex: 1 1 200px;
+      max-width: 250px;
+    }
+
+    .download-btns {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .download-btns button {
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .download-btns button:hover {
+      background: linear-gradient(90deg, #0072ff, #0050d4);
+      box-shadow: 0 6px 20px rgba(0, 114, 255, 0.4);
+    }
+
+    @media (max-width: 600px) {
+
+
+      .input-section input {
+        width: 90%;
+      }
+
+      .download-btns button {
+        width: 90%;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
   <header class="slide-down">
     <h1>LUCKY POT</h1>
     <nav class="fade-in">
@@ -18,23 +76,96 @@
     </nav>
   </header>
 
-  <section class="download-section fade-in">
-    <h2>Download Result Files</h2>
-    <label for="download-date">Select Date:</label>
-    <input type="date" id="download-date" name="download-date">
-    <button onclick="downloadFile()">Download</button>
+  <section class="fade-in">
+    <h2 style="text-align:center;">📥 Download Result File</h2>
+
+    <div class="input-section">
+      <label for="result-date">Select Date:</label>
+      <input type="date" id="result-date">
+    </div>
+
+    <div class="download-btns">
+      <button onclick="downloadCSV()">Download CSV</button>
+    </div>
+
+    <p id="status"></p>
   </section>
 
   <footer class="fade-in">
     <p>© 2025 Lucky Pot | All Rights Reserved</p>
   </footer>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
   <script>
-    function downloadFile() {
-      const selectedDate = document.getElementById('download-date').value;
-      // Implement file download logic based on selectedDate
-      alert(`Downloading results for ${selectedDate}`);
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
+      authDomain: "lottery-e05d5.firebaseapp.com",
+      databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
+      projectId: "lottery-e05d5",
+      storageBucket: "lottery-e05d5.firebasestorage.app",
+      messagingSenderId: "357588305425",
+      appId: "1:357588305425:web:d1608265a0743fdda693b0",
+      measurementId: "G-GE938RN0DB"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function formatTime12hr(timeStr) {
+      const [hour, minute] = timeStr.split(':');
+      const h = parseInt(hour);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hr12 = h % 12 || 12;
+      return `${hr12}:${minute} ${ampm}`;
+    }
+
+    function downloadCSV() {
+      const selectedDate = document.getElementById('result-date').value;
+      const status = document.getElementById('status');
+
+      if (!selectedDate) {
+        status.innerText = "⚠️ Please select a date.";
+        return;
+      }
+
+      status.innerText = "🔄 Fetching results...";
+
+      db.ref('results/' + selectedDate).once('value').then(snapshot => {
+        const data = snapshot.val();
+
+        if (!data) {
+          status.innerText = "❌ No results found for the selected date.";
+          return;
+        }
+
+        const results = Object.values(data).sort((a, b) => a.time.localeCompare(b.time));
+
+        let csv = "Draw Time,1st Prize,2nd Prize,3rd Prize\n";
+        results.forEach(entry => {
+          const time = formatTime12hr(entry.time);
+          const num = entry.number;
+          csv += `${time},${num},${num.slice(-2)},${num.slice(-1)}\n`;
+        });
+
+        const filename = `${selectedDate}.csv`;
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        status.innerText = `✅ File "${filename}" downloaded.`;
+      }).catch(err => {
+        console.error(err);
+        status.innerText = "❌ Error fetching result.";
+      });
     }
   </script>
 </body>
+
 </html>

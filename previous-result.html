@@ -1,12 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Previous Results - Lucky Pot</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .input-section {
+      text-align: center;
+      margin: 30px 0 20px;
+    }
+
+    .input-section input,
+    .input-section button {
+      padding: 10px 16px;
+      font-size: 16px;
+      margin: 0 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      background: #fff;
+    }
+
+    th {
+      background: #0153eb;
+      color: #fff;
+      padding: 14px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    td {
+      padding: 12px 16px;
+      font-size: 15px;
+      color: #333;
+      text-align: center;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #fafafa;
+    }
+
+    tr:hover td {
+      background-color: #f0e7fa;
+      cursor: default;
+      transition: background 0.2s ease;
+    }
+
+    #status {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 15px;
+      color: #999;
+    }
+
+    @media (max-width: 600px) {
+      .input-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .input-section input,
+      .input-section button {
+        width: 90%;
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+  </style>
+
 </head>
+
 <body>
   <header class="slide-down">
     <h1>LUCKY POT</h1>
@@ -19,26 +103,104 @@
   </header>
 
   <section class="result-section fade-in">
-    <h2>Previous Results</h2>
-    <label for="result-date">Select Date:</label>
-    <input type="date" id="result-date" name="result-date">
-    <button onclick="fetchResults()">View Results</button>
+    <h2 style="text-align:center;">📅 Previous Results</h2>
 
-    <div id="previous-results">
-      <!-- Results will be displayed here -->
+    <div class="input-section">
+      <label for="result-date">Select Date:</label>
+      <input type="date" id="result-date" name="result-date">
+      <button onclick="fetchResults()">View Results</button>
     </div>
+
+    <div id="table-container"></div>
+    <p id="status" style="text-align:center; color: gray;"></p>
   </section>
 
   <footer class="fade-in">
     <p>© 2025 Lucky Pot | All Rights Reserved</p>
   </footer>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
+      authDomain: "lottery-e05d5.firebaseapp.com",
+      databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
+      projectId: "lottery-e05d5",
+      storageBucket: "lottery-e05d5.firebasestorage.app",
+      messagingSenderId: "357588305425",
+      appId: "1:357588305425:web:d1608265a0743fdda693b0",
+      measurementId: "G-GE938RN0DB"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function formatTime12hr(timeStr) {
+      const [hour, minute] = timeStr.split(':');
+      const h = parseInt(hour);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hr12 = h % 12 || 12;
+      return `${hr12}:${minute} ${ampm}`;
+    }
+
     function fetchResults() {
       const selectedDate = document.getElementById('result-date').value;
-      // Implement AJAX call or other methods to fetch and display results based on selectedDate
-      document.getElementById('previous-results').innerHTML = `<p>Results for ${selectedDate} will be displayed here.</p>`;
+      const tableContainer = document.getElementById('table-container');
+      const status = document.getElementById('status');
+
+      tableContainer.innerHTML = '';
+      status.innerText = '';
+
+      if (!selectedDate) {
+        status.innerText = "Please select a date.";
+        return;
+      }
+
+      db.ref('results/' + selectedDate).once('value').then(snapshot => {
+        const data = snapshot.val();
+
+        if (!data) {
+          status.innerText = "No results found for the selected date.";
+          return;
+        }
+
+        const sorted = Object.values(data).sort((a, b) => a.time.localeCompare(b.time));
+
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>Draw Time</th>
+                <th>1st Prize</th>
+                <th>2nd Prize</th>
+                <th>3rd Prize</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        sorted.forEach(entry => {
+          html += `
+            <tr>
+              <td>${formatTime12hr(entry.time)}</td>
+              <td>${entry.number}</td>
+              <td>${entry.number.slice(-2)}</td>
+              <td>${entry.number.slice(-1)}</td>
+            </tr>
+          `;
+        });
+
+        html += `</tbody></table>`;
+        tableContainer.innerHTML = html;
+      }).catch(err => {
+        console.error(err);
+        status.innerText = "❌ Error fetching result.";
+      });
     }
   </script>
 </body>
+
 </html>

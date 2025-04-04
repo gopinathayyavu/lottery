@@ -6,6 +6,38 @@
   <title>Today Result - Lucky Pot</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .draw-times {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .draw-times button {
+      padding: 8px 16px;
+      font-weight: 600;
+      border: none;
+      background: #eee;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .draw-times button.active {
+      background: #222;
+      color: #fff;
+    }
+    .draw {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .draw.visible {
+      display: block;
+    }
+    .prize {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <header class="slide-down">
@@ -19,51 +51,109 @@
   </header>
 
   <section class="result-section fade-in">
-    <h2>🎯 Today's Results</h2>
-
-    <div class="draw-times">
-      <button onclick="showResult('draw1')" class="active">11:00 AM</button>
-      <button onclick="showResult('draw2')">01:00 PM</button>
-      <button onclick="showResult('draw3')">03:00 PM</button>
-    </div>
-
-    <div id="draw1" class="draw animate-up visible">
-      <h3>Draw Time: 11:00 AM</h3>
-      <p><strong>1st Prize:</strong> <span class="prize">525</span></p>
-      <p><strong>2nd Prize:</strong> <span class="prize">25</span></p>
-      <p><strong>3rd Prize:</strong> <span class="prize">5</span></p>
-    </div>
-
-    <div id="draw2" class="draw animate-up">
-      <h3>Draw Time: 01:00 PM</h3>
-      <p><strong>1st Prize:</strong> <span class="prize">638</span></p>
-      <p><strong>2nd Prize:</strong> <span class="prize">42</span></p>
-      <p><strong>3rd Prize:</strong> <span class="prize">8</span></p>
-    </div>
-
-    <div id="draw3" class="draw animate-up">
-      <h3>Draw Time: 03:00 PM</h3>
-      <p><strong>1st Prize:</strong> <span class="prize">910</span></p>
-      <p><strong>2nd Prize:</strong> <span class="prize">56</span></p>
-      <p><strong>3rd Prize:</strong> <span class="prize">14</span></p>
-    </div>
+    <h2 style="text-align:center;">🎯 Today's Results</h2>
+    <div class="draw-times" id="drawTabs"></div>
+    <div id="drawResults"></div>
+    <p id="status" style="text-align:center; color: gray;"></p>
   </section>
 
   <footer class="fade-in">
     <p>© 2025 Lucky Pot | All Rights Reserved</p>
   </footer>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
   <script>
-    function showResult(id) {
-      const buttons = document.querySelectorAll(".draw-times button");
-      buttons.forEach(btn => btn.classList.remove("active"));
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
+      authDomain: "lottery-e05d5.firebaseapp.com",
+      databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
+      projectId: "lottery-e05d5",
+      storageBucket: "lottery-e05d5.firebasestorage.app",
+      messagingSenderId: "357588305425",
+      appId: "1:357588305425:web:d1608265a0743fdda693b0",
+      measurementId: "G-GE938RN0DB"
+    };
 
-      const draws = document.querySelectorAll(".draw");
-      draws.forEach(draw => draw.classList.remove("visible"));
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-      document.getElementById(id).classList.add("visible");
-      event.target.classList.add("active");
+    function formatTime12hr(timeStr) {
+      const [hour, minute] = timeStr.split(':');
+      const h = parseInt(hour);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hr12 = h % 12 || 12;
+      return `${hr12}:${minute} ${ampm}`;
     }
+
+    function renderTodayResults() {
+      const today = new Date().toISOString().split('T')[0];
+      const now = new Date();
+      const currentTime = now.toTimeString().slice(0, 5);
+      const drawTabs = document.getElementById('drawTabs');
+      const drawResults = document.getElementById('drawResults');
+      const status = document.getElementById('status');
+
+      db.ref("results/" + today).once('value').then(snapshot => {
+        const data = snapshot.val();
+        if (!data) {
+          status.innerText = "No results released yet.";
+          return;
+        }
+
+        const draws = Object.values(data)
+          .filter(d => d.time <= currentTime)
+          .sort((a, b) => a.time.localeCompare(b.time));
+
+        if (draws.length === 0) {
+          status.innerText = "Results are not announced yet.";
+          return;
+        }
+
+        drawTabs.innerHTML = '';
+        drawResults.innerHTML = '';
+        status.innerText = '';
+
+        draws.forEach((draw, index) => {
+          const tabId = "draw" + index;
+          const number = draw.number;
+          const timeLabel = formatTime12hr(draw.time);
+
+          // Create Tab Button
+          const btn = document.createElement('button');
+          btn.innerText = timeLabel;
+          btn.onclick = () => showResult(tabId, btn);
+          if (index === 0) btn.classList.add("active");
+          drawTabs.appendChild(btn);
+
+          // Create Result Block
+          const div = document.createElement('div');
+          div.className = 'draw' + (index === 0 ? ' visible' : '');
+          div.id = tabId;
+          div.innerHTML = `
+            <h3>Draw Time: ${timeLabel}</h3>
+            <p><strong>1st Prize:</strong> <span class="prize">${number}</span></p>
+            <p><strong>2nd Prize:</strong> <span class="prize">${number.slice(-2)}</span></p>
+            <p><strong>3rd Prize:</strong> <span class="prize">${number.slice(-1)}</span></p>
+          `;
+          drawResults.appendChild(div);
+        });
+      });
+    }
+
+    function showResult(id, btn) {
+      const allButtons = document.querySelectorAll(".draw-times button");
+      allButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const allDraws = document.querySelectorAll(".draw");
+      allDraws.forEach(d => d.classList.remove("visible"));
+      document.getElementById(id).classList.add("visible");
+    }
+
+    document.addEventListener('DOMContentLoaded', renderTodayResults);
   </script>
 </body>
 </html>
