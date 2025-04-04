@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Luck pot</title>
+  <title>Luck Pot</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css"/>
 </head>
@@ -13,22 +13,121 @@
     <nav class="fade-in">
       <a href="index.html">Home</a>
       <a href="today-result.html">Today Result</a>
-      <a href="previous-result.html" >Previous Result</a>
+      <a href="previous-result.html">Previous Result</a>
       <a href="result-file-download.html">Result File Download</a>
+      <a href="admin.html">Admin</a>
     </nav>
   </header>
 
   <section class="draw-section fade-in">
-    <div class="draw-time">S-Draw Time: <span>11:30:00</span></div>
+    <div class="draw-time">S-Draw Time: <span id="drawTime">--:--</span></div>
     <div class="cards">
-      <div class="card animate-up">–</div>
-      <div class="card animate-up delay-1">–</div>
-      <div class="card animate-up delay-2">–</div>
+      <div id="digit1" class="card animate-up">–</div>
+      <div id="digit2" class="card animate-up delay-1">–</div>
+      <div id="digit3" class="card animate-up delay-2">–</div>
     </div>
+    <p id="result-status" style="margin-top: 10px; color: gray;"></p>
   </section>
 
   <footer class="fade-in">
     <p>© 2025 Lovepot.vip | All Rights Reserved</p>
   </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
+      authDomain: "lottery-e05d5.firebaseapp.com",
+      databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
+      projectId: "lottery-e05d5",
+      storageBucket: "lottery-e05d5.firebasestorage.app",
+      messagingSenderId: "357588305425",
+      appId: "1:357588305425:web:d1608265a0743fdda693b0",
+      measurementId: "G-GE938RN0DB"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function formatTime12hr(timeStr) {
+      const [hour, minute] = timeStr.split(':');
+      const h = parseInt(hour);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hr12 = h % 12 || 12;
+      return `${hr12}:${minute} ${ampm}`;
+    }
+
+    function formatCountdown(ms) {
+      if (ms < 0) return "Result time passed";
+      const mins = Math.floor(ms / 60000);
+      const secs = Math.floor((ms % 60000) / 1000);
+      return `${mins}m ${secs}s remaining`;
+    }
+
+    function updateCard(number) {
+      document.getElementById('digit1').innerText = number[0];
+      document.getElementById('digit2').innerText = number[1];
+      document.getElementById('digit3').innerText = number[2];
+    }
+
+    function fetchLatestDraw() {
+      const today = new Date().toISOString().split('T')[0];
+      const now = new Date();
+      const currentTime = now.toTimeString().slice(0, 5); // HH:MM
+
+      db.ref('results/' + today).once('value').then(snapshot => {
+        const results = snapshot.val();
+        const status = document.getElementById('result-status');
+        const drawTimeEl = document.getElementById('drawTime');
+
+        if (!results) {
+          drawTimeEl.innerText = '--:--';
+          status.innerText = "⏳ No draws available yet.";
+          updateCard('–––');
+          return;
+        }
+
+        const entries = Object.values(results).sort((a, b) => a.time.localeCompare(b.time));
+        let currentDraw = null;
+        let nextDraw = null;
+
+        for (const entry of entries) {
+          if (entry.time <= currentTime) {
+            currentDraw = entry;
+          } else if (!nextDraw) {
+            nextDraw = entry;
+          }
+        }
+
+        if (currentDraw) {
+          updateCard(currentDraw.number);
+          drawTimeEl.innerText = formatTime12hr(currentDraw.time);
+          status.innerText = `✅ Result for ${formatTime12hr(currentDraw.time)} announced`;
+        } else {
+          updateCard('–––');
+          status.innerText = "⏳ Waiting for first result...";
+        }
+
+        if (nextDraw) {
+          const nextTime = new Date(today + 'T' + nextDraw.time + ':00');
+          const timeDiff = nextTime - now;
+          drawTimeEl.innerText = `${formatTime12hr(nextDraw.time)} (${formatCountdown(timeDiff)})`;
+        } else if (!currentDraw) {
+          drawTimeEl.innerText = '--:--';
+        }
+      }).catch(err => {
+        console.error(err);
+        document.getElementById('result-status').innerText = '❌ Error fetching result.';
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchLatestDraw();
+      setInterval(fetchLatestDraw, 1000); // Refresh every 10 seconds
+    });
+  </script>
 </body>
 </html>

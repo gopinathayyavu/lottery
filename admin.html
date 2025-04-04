@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luck Pot - Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="slide-down">
+    <h1>LUCKY POT</h1>
+    <nav class="fade-in">
+      <a href="index.html">Home</a>
+      <a href="today-result.html">Today Result</a>
+      <a href="previous-result.html">Previous Result</a>
+      <a href="result-file-download.html">Result File Download</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <section class="draw-section fade-in">
+    <div class="form-container">
+      <div class="form-group">
+        <label for="date" class="form-label">Select Date</label>
+        <input type="date" id="date" class="form-input" />
+      </div>
+
+      <div class="form-group">
+        <label for="time" class="form-label">Select Time</label>
+        <input type="time" id="time" class="form-input" />
+      </div>
+
+      <div class="form-group">
+        <label for="number" class="form-label">Enter Number</label>
+        <input type="number" id="number" class="form-input" placeholder="Enter a 3-digit number" />
+      </div>
+
+      <div class="btn-container">
+        <button type="button" class="btn" onclick="submitResult()">Submit</button>
+      </div>
+
+      <p id="status" style="margin-top: 10px; color: green;"></p>
+    </div>
+  </section>
+
+  <footer class="fade-in">
+    <p>© 2025 Lovepot.vip | All Rights Reserved</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
+      authDomain: "lottery-e05d5.firebaseapp.com",
+      databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
+      projectId: "lottery-e05d5",
+      storageBucket: "lottery-e05d5.firebasestorage.app",
+      messagingSenderId: "357588305425",
+      appId: "1:357588305425:web:d1608265a0743fdda693b0",
+      measurementId: "G-GE938RN0DB"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function submitResult() {
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const number = document.getElementById("number").value;
+      const status = document.getElementById("status");
+
+      if (!date || !time || !number || number.length !== 3) {
+        status.style.color = 'red';
+        status.innerText = "❌ Please fill all fields with a valid 3-digit number.";
+        return;
+      }
+
+      const data = { time, number };
+
+      db.ref("results/" + date).push(data)
+        .then(() => {
+          status.style.color = 'green';
+          status.innerText = "✅ Result saved successfully!";
+          document.getElementById("date").value = '';
+          document.getElementById("time").value = '';
+          document.getElementById("number").value = '';
+        })
+        .catch(error => {
+          status.style.color = 'red';
+          status.innerText = "❌ Error saving result: " + error.message;
+        });
+    }
+  </script>
+</body>
+</html>
