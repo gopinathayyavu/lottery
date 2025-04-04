@@ -123,11 +123,14 @@ nav a:hover {
 
 /* Draw Section */
 .draw-section {
+  justify-content: center;
+  align-items: center;
   margin-top: 50px;
-  text-align: center;
+  text-align: left;
   padding: 1rem;
   width: 100%;
   max-width: 700px;
+  margin-left: 20%;
 }
 
 .draw-time {
