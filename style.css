@@ -138,12 +138,12 @@ nav a:hover {
   margin-bottom: 1.8rem;
   font-weight: 600;
   color: #0077cc;
+  margin-left: 10%;
 }
 
 /* Cards */
 .cards {
   display: flex;
-  justify-content: center;
   gap: 1.5rem;
   flex-wrap: nowrap;
   overflow-x: auto;
@@ -236,6 +236,7 @@ footer {
 
   .draw-time {
     font-size: 1rem;
+    margin-left: 20%;
   }
 
   footer {
