@@ -1,15 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Luck Pot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Big Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .cards {
+      display: flex;
+      gap: 40px;
+      margin-top: 100px;
+    }
+
+    .led-ring {
+      position: relative;
+      width: 120px;
+      height: 120px;
+    }
+
+    .digit {
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      margin-left: 6px;
+      margin-top: 6px;
+      background: black;
+      color: white;
+      border-radius: 50%;
+      font-size: 2.5rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .leds {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+    }
+
+    .led {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: gold;
+      border-radius: 50%;
+      box-shadow: 0 0 8px gold;
+      animation: blink 0.2s infinite alternate;
+      transform: rotate(calc(var(--i) * 18deg)) translate(55px) rotate(calc(var(--i) * -18deg));
+      /* 360deg / 20 = 18deg between each */
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.3;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <header class="slide-down">
-    <h1>LUCKY POT</h1>
+    <h1>BIG BOSS</h1>
     <nav class="fade-in">
       <a href="index.html">Home</a>
       <a href="today-result.html">Today Result</a>
@@ -22,15 +86,95 @@
   <section class="draw-section fade-in">
     <div class="draw-time">S-Draw Time: <span id="drawTime">--:--</span></div>
     <div class="cards">
-      <div id="digit1" class="card animate-up">–</div>
-      <div id="digit2" class="card animate-up delay-1">–</div>
-      <div id="digit3" class="card animate-up delay-2">–</div>
+      <div class="led-ring">
+        <div id="digit1" class="digit">–</div>
+        <div class="leds">
+          <!-- 20 LEDs -->
+          <div class="led" style="--i:0"></div>
+          <div class="led" style="--i:1"></div>
+          <div class="led" style="--i:2"></div>
+          <div class="led" style="--i:3"></div>
+          <div class="led" style="--i:4"></div>
+          <div class="led" style="--i:5"></div>
+          <div class="led" style="--i:6"></div>
+          <div class="led" style="--i:7"></div>
+          <div class="led" style="--i:8"></div>
+          <div class="led" style="--i:9"></div>
+          <div class="led" style="--i:10"></div>
+          <div class="led" style="--i:11"></div>
+          <div class="led" style="--i:12"></div>
+          <div class="led" style="--i:13"></div>
+          <div class="led" style="--i:14"></div>
+          <div class="led" style="--i:15"></div>
+          <div class="led" style="--i:16"></div>
+          <div class="led" style="--i:17"></div>
+          <div class="led" style="--i:18"></div>
+          <div class="led" style="--i:19"></div>
+          <div class="led" style="--i:20"></div>
+        </div>
+      </div>
+      <div class="led-ring">
+        <div id="digit2" class="digit">–</div>
+        <div class="leds">
+          <!-- 20 LEDs -->
+          <div class="led" style="--i:0"></div>
+          <div class="led" style="--i:1"></div>
+          <div class="led" style="--i:2"></div>
+          <div class="led" style="--i:3"></div>
+          <div class="led" style="--i:4"></div>
+          <div class="led" style="--i:5"></div>
+          <div class="led" style="--i:6"></div>
+          <div class="led" style="--i:7"></div>
+          <div class="led" style="--i:8"></div>
+          <div class="led" style="--i:9"></div>
+          <div class="led" style="--i:10"></div>
+          <div class="led" style="--i:11"></div>
+          <div class="led" style="--i:12"></div>
+          <div class="led" style="--i:13"></div>
+          <div class="led" style="--i:14"></div>
+          <div class="led" style="--i:15"></div>
+          <div class="led" style="--i:16"></div>
+          <div class="led" style="--i:17"></div>
+          <div class="led" style="--i:18"></div>
+          <div class="led" style="--i:19"></div>
+          <div class="led" style="--i:20"></div>
+        </div>
+      </div>
+      <div class="led-ring">
+        <div id="digit3" class="digit">–</div>
+        <div class="leds">
+          <!-- 20 LEDs -->
+          <div class="led" style="--i:0"></div>
+          <div class="led" style="--i:1"></div>
+          <div class="led" style="--i:2"></div>
+          <div class="led" style="--i:3"></div>
+          <div class="led" style="--i:4"></div>
+          <div class="led" style="--i:5"></div>
+          <div class="led" style="--i:6"></div>
+          <div class="led" style="--i:7"></div>
+          <div class="led" style="--i:8"></div>
+          <div class="led" style="--i:9"></div>
+          <div class="led" style="--i:10"></div>
+          <div class="led" style="--i:11"></div>
+          <div class="led" style="--i:12"></div>
+          <div class="led" style="--i:13"></div>
+          <div class="led" style="--i:14"></div>
+          <div class="led" style="--i:15"></div>
+          <div class="led" style="--i:16"></div>
+          <div class="led" style="--i:17"></div>
+          <div class="led" style="--i:18"></div>
+          <div class="led" style="--i:19"></div>
+          <div class="led" style="--i:20"></div>
+        </div>
+      </div>
+      <!-- Copy the above two more times for digit2 and digit3 -->
     </div>
-    <p id="result-status" style="margin-top: 20px; color: gray; margin-left: 10%;"></p>
+
+    <p id="result-status" style="margin-top: 20px; color: rgb(0, 204, 255); margin-left: 5%;"></p>
   </section>
 
   <footer class="fade-in">
-    <p>© 2025 Lovepot.vip | All Rights Reserved</p>
+    <p>© 2025 Big Boss | All Rights Reserved</p>
   </footer>
 
   <!-- Firebase SDK -->
@@ -130,4 +274,5 @@
     });
   </script>
 </body>
+
 </html>

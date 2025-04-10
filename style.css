@@ -7,13 +7,16 @@
 
 body {
   font-family: 'Outfit', sans-serif;
-  background: linear-gradient(to bottom right, #d9f3ff, #ecfaff);
+  /* background: linear-gradient(to bottom right, #d9f3ff, #ecfaff); */
+  background-image: url('assets/home-bg.png');
+  background-repeat: no-repeat;
   color: #1a1a1a;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
+  background-size: cover;
 }
 
 /* Animations */
@@ -75,7 +78,6 @@ body {
 /* Header */
 header {
   width: 100%;
-  background: rgba(255, 255, 255, 0.85);
   padding: 1.5rem 1rem;
   text-align: center;
   position: sticky;
@@ -87,11 +89,16 @@ header {
 
 header h1 {
   font-size: 2.7rem;
-  font-weight: 800;
-  color: #0077cc;
+  color: goldenrod;
+  font-weight: bold;
   letter-spacing: 1px;
   text-shadow: 0 1px 4px rgba(0, 119, 204, 0.1);
+  display: inline-block; /* this ensures the border wraps only the text */
+  border: 2px solid goldenrod;
+  padding: 2px 6px; /* minimal padding to avoid squishing the text */
+  border-radius: 4px; /* optional: for smooth corners */
 }
+
 
 /* Nav */
 nav {
@@ -104,8 +111,8 @@ nav {
 
 nav a {
   text-decoration: none;
-  color: white;
-  background: linear-gradient(135deg, #3b8beb, #0077cc);
+  color: black;
+  background: goldenrod;
   padding: 0.6rem 1.4rem;
   font-weight: 600;
   font-size: 1rem;
@@ -115,8 +122,7 @@ nav a {
 }
 
 nav a:hover {
-  background: #5c9be7;
-  color: white;
+  background: gold;
   backdrop-filter: blur(8px);
   box-shadow: 0 6px 20px rgba(0, 119, 204, 0.25);
 }
@@ -137,12 +143,12 @@ nav a:hover {
   font-size: 1.5rem;
   margin-bottom: 1.8rem;
   font-weight: 600;
-  color: #0077cc;
-  margin-left: 10%;
+  color: #00aeff;
+  margin-left: 5%;
 }
 
 /* Cards */
-.cards {
+/* .cards {
   display: flex;
   gap: 1.5rem;
   flex-wrap: nowrap;
@@ -185,18 +191,17 @@ nav a:hover {
   transform: scale(1.08) rotate(-1deg);
   box-shadow: 0 20px 40px rgba(0, 132, 255, 0.25);
   background: #f8fcff;
-}
+} */
 
 /* Footer */
 footer {
   margin-top: auto;
   padding: 1rem;
-  background: #eef7ff;
+  background: goldenrod;
   width: 100%;
   text-align: center;
   font-size: 0.85rem;
   color: #666;
-  border-top: 1px solid #d0eaff;
 }
 
 /* Responsive */
@@ -453,14 +458,17 @@ button:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 300px;
 }
+
 .form-group {
   margin-bottom: 15px;
 }
+
 .form-label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
+
 .form-input {
   width: 100%;
   padding: 8px;
@@ -468,9 +476,11 @@ button:hover {
   border-radius: 5px;
   font-size: 14px;
 }
+
 .btn-container {
   text-align: center;
 }
+
 .btn {
   width: 100%;
   padding: 10px;
@@ -481,6 +491,7 @@ button:hover {
   cursor: pointer;
   border-radius: 5px;
 }
+
 .btn:hover {
   background: #0056b3;
 }
