@@ -99,6 +99,18 @@ header h1 {
   border-radius: 4px; /* optional: for smooth corners */
 }
 
+h1 {
+  font-size: 2.7rem;
+  color: goldenrod;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 4px rgba(0, 119, 204, 0.1);
+  display: inline-block; /* this ensures the border wraps only the text */
+  border: 2px solid goldenrod;
+  padding: 2px 6px; /* minimal padding to avoid squishing the text */
+  border-radius: 4px; /* optional: for smooth corners */
+}
+
 
 /* Nav */
 nav {

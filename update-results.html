@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Result - Big Boss</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    input[type="text"] {
+      padding: 6px;
+      width: 60px;
+      text-align: center;
+    }
+
+    #status {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="slide-down">
+    <h1>BIG BOSS</h1>
+    <nav class="fade-in">
+      <a href="index.html">Home</a>
+      <a href="admin.html">Admin Panel</a>
+      <a href="update-result.html" class="active">Update Result</a>
+    </nav>
+  </header>
+
+  <div class="container fade-in">
+    <h2>🛠️ Edit Results</h2>
+
+    <div class="form-group">
+      <label for="result-date"><strong>Select Date:</strong></label>
+      <input type="date" id="result-date" onchange="loadResults()">
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Show</th>
+          <th>Time</th>
+          <th>Result Number</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody id="results-table">
+        <!-- rows will be injected -->
+      </tbody>
+    </table>
+
+    <p id="status"></p>
+  </div>
+
+  <footer class="fade-in">
+    <p>© 2025 Big Boss | All Rights Reserved</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
+      authDomain: "lottery-e05d5.firebaseapp.com",
+      databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
+      projectId: "lottery-e05d5",
+      storageBucket: "lottery-e05d5.appspot.com",
+      messagingSenderId: "357588305425",
+      appId: "1:357588305425:web:d1608265a0743fdda693b0"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const showTimeMap = {
+      1: "10:00",
+      2: "11:00",
+      3: "12:00",
+      4: "13:00",
+      5: "17:00",
+      6: "18:00",
+      7: "19:00",
+      8: "20:00"
+    };
+
+    function restrictPastDates() {
+      const dateInput = document.getElementById('result-date');
+      const today = new Date().toISOString().split("T")[0];
+      dateInput.setAttribute("min", today);
+    }
+
+    function loadResults() {
+      const selectedDate = document.getElementById('result-date').value;
+      const tableBody = document.getElementById('results-table');
+      const status = document.getElementById('status');
+      tableBody.innerHTML = "";
+      status.innerText = "";
+
+      if (!selectedDate) return;
+
+      db.ref('results/' + selectedDate).once('value').then(snapshot => {
+        const data = snapshot.val() || {};
+        const rows = [];
+
+        for (let i = 1; i <= 8; i++) {
+          const time = showTimeMap[i];
+          let result = "";
+          let key = null;
+
+          if (data) {
+            for (let k in data) {
+              if (data[k].time === time) {
+                result = data[k].number;
+                key = k;
+                break;
+              }
+            }
+          }
+
+          rows.push(`
+            <tr>
+              <td>Show ${i}</td>
+              <td>${time}</td>
+              <td><input type="text" maxlength="3" id="num-${i}" value="${result || ''}" /></td>
+              <td><button onclick="saveResult('${selectedDate}', '${time}', 'num-${i}', '${key || ''}')">Save</button></td>
+            </tr>
+          `);
+        }
+
+        tableBody.innerHTML = rows.join('');
+      });
+    }
+
+    async function saveResult(date, time, inputId, existingKey) {
+      const number = document.getElementById(inputId).value.trim();
+      const status = document.getElementById('status');
+
+      if (number.length !== 3) {
+        status.style.color = "red";
+        status.innerText = `❌ Please enter a 3-digit number.`;
+        return;
+      }
+
+      if (existingKey) {
+        await db.ref(`results/${date}/${existingKey}`).update({ number });
+        status.style.color = "green";
+        status.innerText = `✅ Result updated for ${time}`;
+      } else {
+        await db.ref(`results/${date}`).push({ time, number });
+        status.style.color = "green";
+        status.innerText = `✅ Result created for ${time}`;
+      }
+
+      loadResults(); // Refresh after update
+    }
+
+    document.addEventListener('DOMContentLoaded', restrictPastDates);
+  </script>
+</body>
+</html>

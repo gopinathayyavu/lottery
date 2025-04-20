@@ -12,12 +12,13 @@
 </head>
 <body onload="protectAdminPage()">
   <header class="slide-down">
-    <h1>BIG BOSS (Admin)</h1>
+    <h1>BIG BOSS</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="today-result.html">Today Result</a>
       <a href="previous-result.html">Previous Result</a>
       <a href="result-file-download.html">Download</a>
+      <a href="update-results.html">Update</a>
       <a onclick="logout()">Logout</a>
     </nav>
   </header>
@@ -30,9 +31,22 @@
       </div>
 
       <div class="form-group">
-        <label for="time">Select Time</label>
-        <input type="time" id="time" class="form-input">
+        <label for="show">Select Show</label>
+        <select id="show" class="form-input" onchange="mapShowToTime()">
+          <option value="">-- Select Show --</option>
+          <option value="1">Show 1 (10:00)</option>
+          <option value="2">Show 2 (11:00)</option>
+          <option value="3">Show 3 (12:00)</option>
+          <option value="4">Show 4 (01:00 PM)</option>
+          <option value="5">Show 5 (05:00 PM)</option>
+          <option value="6">Show 6 (06:00 PM)</option>
+          <option value="7">Show 7 (07:00 PM)</option>
+          <option value="8">Show 8 (08:00 PM)</option>
+        </select>
       </div>
+
+      <!-- Hidden Time Input -->
+      <input type="hidden" id="time">
 
       <div class="form-group">
         <label for="number">Winning Number</label>
@@ -49,6 +63,24 @@
 
   <script>
     const db = firebase.database();
+
+    const showTimeMap = {
+      "1": "10:00",
+      "2": "11:00",
+      "3": "12:00",
+      "4": "13:00",
+      "5": "17:00",
+      "6": "18:00",
+      "7": "19:00",
+      "8": "20:00"
+    };
+
+    function mapShowToTime() {
+      const selectedShow = document.getElementById("show").value;
+      const mappedTime = showTimeMap[selectedShow] || "";
+      document.getElementById("time").value = mappedTime;
+    }
+
     function submitResult() {
       const date = document.getElementById("date").value;
       const time = document.getElementById("time").value;
@@ -66,6 +98,7 @@
           status.style.color = 'green';
           status.innerText = "✅ Result saved successfully!";
           document.getElementById("date").value = '';
+          document.getElementById("show").value = '';
           document.getElementById("time").value = '';
           document.getElementById("number").value = '';
         })

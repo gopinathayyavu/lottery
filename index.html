@@ -98,16 +98,16 @@
 
 <body>
   <header class="slide-down">
-    <h1>BIG BOSS</h1>
+    
     <nav class="fade-in">
       <a href="index.html">Home</a>
       <a href="today-result.html">Today Result</a>
       <a href="previous-result.html">Previous Result</a>
       <a href="result-file-download.html">Result File Download</a>
-      <a href="admin.html">Admin</a>
+      <!-- <a href="admin.html">Admin</a> -->
     </nav>
   </header>
-
+  <h1>BIG BOSS</h1>
   <section class="draw-section fade-in">
     <div class="draw-time-container">
       <div class="draw-time">Draw Time: <span id="drawTime">--:--</span></div>
@@ -204,6 +204,26 @@
   <footer class="fade-in">
     <p>© 2025 Big Boss | All Rights Reserved</p>
   </footer>
+  <audio id="bg-music" autoplay loop>
+    <source src="assets/music-for-page.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const audio = document.getElementById("bg-music");
+      audio.volume = 0.2;
+
+      const tryPlay = () => {
+        audio.play().catch(() => {
+          document.body.addEventListener("click", () => {
+            audio.play();
+          }, { once: true });
+        });
+      };
+
+      tryPlay();
+    });
+  </script>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -301,6 +321,9 @@
       setInterval(fetchLatestDraw, 1000); // Refresh every 10 seconds
     });
   </script>
+
+
+
 </body>
 
 </html>

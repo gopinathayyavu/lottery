@@ -10,6 +10,7 @@
     .draw-times {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
       margin: 20px 0;
     }
@@ -36,6 +37,12 @@
     .prize {
       font-size: 24px;
       font-weight: bold;
+      color: #222;
+    }
+    .not-available {
+      font-size: 18px;
+      color: #999;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -71,14 +78,18 @@
       authDomain: "lottery-e05d5.firebaseapp.com",
       databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
       projectId: "lottery-e05d5",
-      storageBucket: "lottery-e05d5.firebasestorage.app",
+      storageBucket: "lottery-e05d5.appspot.com",
       messagingSenderId: "357588305425",
-      appId: "1:357588305425:web:d1608265a0743fdda693b0",
-      measurementId: "G-GE938RN0DB"
+      appId: "1:357588305425:web:d1608265a0743fdda693b0"
     };
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+
+    const showTimes = [
+      "10:00", "11:00", "12:00", "13:00",
+      "17:00", "18:00", "19:00", "20:00"
+    ];
 
     function formatTime12hr(timeStr) {
       const [hour, minute] = timeStr.split(':');
@@ -96,60 +107,59 @@
       const drawResults = document.getElementById('drawResults');
       const status = document.getElementById('status');
 
+      drawTabs.innerHTML = '';
+      drawResults.innerHTML = '';
+      status.innerText = '';
+
       db.ref("results/" + today).once('value').then(snapshot => {
-        const data = snapshot.val();
-        if (!data) {
-          status.innerText = "No results released yet.";
-          return;
-        }
+        const data = snapshot.val() || {};
+        const resultMap = {};
 
-        const draws = Object.values(data)
-          .filter(d => d.time <= currentTime)
-          .sort((a, b) => a.time.localeCompare(b.time));
+        Object.values(data).forEach(entry => {
+          resultMap[entry.time] = entry;
+        });
 
-        if (draws.length === 0) {
-          status.innerText = "Results are not announced yet.";
-          return;
-        }
-
-        drawTabs.innerHTML = '';
-        drawResults.innerHTML = '';
-        status.innerText = '';
-
-        draws.forEach((draw, index) => {
+        showTimes.forEach((time, index) => {
+          const timeLabel = formatTime12hr(time);
           const tabId = "draw" + index;
-          const number = draw.number;
-          const timeLabel = formatTime12hr(draw.time);
 
-          // Create Tab Button
+          // Tab Button
           const btn = document.createElement('button');
           btn.innerText = timeLabel;
           btn.onclick = () => showResult(tabId, btn);
           if (index === 0) btn.classList.add("active");
           drawTabs.appendChild(btn);
 
-          // Create Result Block
+          // Result Block
           const div = document.createElement('div');
           div.className = 'draw' + (index === 0 ? ' visible' : '');
           div.id = tabId;
-          div.innerHTML = `
-            <h3>Draw Time: ${timeLabel}</h3>
-            <p><strong>1st Prize:</strong> <span class="prize">${number}</span></p>
-            <p><strong>2nd Prize:</strong> <span class="prize">${number.slice(-2)}</span></p>
-            <p><strong>3rd Prize:</strong> <span class="prize">${number.slice(-1)}</span></p>
-          `;
+
+          if (resultMap[time] && time <= currentTime) {
+            const number = resultMap[time].number;
+            div.innerHTML = `
+              <h3>Draw Time: ${timeLabel}</h3>
+              <p><strong>1st Prize (₹15,000):</strong> <span class="prize">${number}</span></p>
+              <p><strong>2nd Prize (₹5,000):</strong> <span class="prize">${number.slice(-2)}</span></p>
+              <p><strong>3rd Prize (₹50):</strong> <span class="prize">${number.slice(-1)}</span></p>
+            `;
+          } else {
+            div.innerHTML = `
+              <h3>Draw Time: ${timeLabel}</h3>
+              <p class="not-available">🕒 Result not released yet.</p>
+            `;
+          }
+
           drawResults.appendChild(div);
         });
       });
     }
 
     function showResult(id, btn) {
-      const allButtons = document.querySelectorAll(".draw-times button");
-      allButtons.forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".draw-times button").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
-      const allDraws = document.querySelectorAll(".draw");
-      allDraws.forEach(d => d.classList.remove("visible"));
+      document.querySelectorAll(".draw").forEach(d => d.classList.remove("visible"));
       document.getElementById(id).classList.add("visible");
     }
 
