@@ -1,12 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Previous Results - Big Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      /* background: linear-gradient(to bottom right, #d9f3ff, #ecfaff); */
+      background-image: url('assets/previous-bg.jpeg');
+      background-repeat: no-repeat;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      background-size: cover;
+    }
+
+    header {
+      width: 100%;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      z-index: 100;
+    }
+
     .input-section {
       text-align: center;
       margin: 30px 0 20px;
@@ -66,6 +92,13 @@
       color: #999;
     }
 
+    label {
+      font-size: 22px;
+      font-weight: bold;
+      color: gold;
+      margin-right: 0.5rem;
+    }
+
     /* Mobile responsiveness only for small screens */
     @media (max-width: 768px) {
       .table-responsive {
@@ -92,7 +125,8 @@
         font-size: 16px;
       }
 
-      th, td {
+      th,
+      td {
         padding: 10px;
       }
     }
@@ -232,4 +266,5 @@
     };
   </script>
 </body>
+
 </html>

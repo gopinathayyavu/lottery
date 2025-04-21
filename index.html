@@ -8,6 +8,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      /* background: linear-gradient(to bottom right, #d9f3ff, #ecfaff); */
+      background-image: url('assets/home-page.gif');
+      background-repeat: no-repeat;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      background-size: cover;
+    }
+
     .cards {
       display: flex;
       gap: 40px;
@@ -98,7 +112,7 @@
 
 <body>
   <header class="slide-down">
-    
+
     <nav class="fade-in">
       <a href="index.html">Home</a>
       <a href="today-result.html">Today Result</a>
@@ -109,98 +123,99 @@
   </header>
   <h1>BIG BOSS</h1>
   <section class="draw-section fade-in">
-    <div class="draw-time-container">
-      <div class="draw-time">Draw Time: <span id="drawTime">--:--</span></div>
-    </div>
+    <div class="main-container">
+      <div class="draw-time-container">
+        <div class="draw-time">Draw Time: <span id="drawTime">--:--</span></div>
+      </div>
 
-    <div class="cards">
-      <div class="led-ring">
-        <div id="digit1" class="digit">–</div>
-        <div class="leds">
-          <!-- 20 LEDs -->
-          <div class="led" style="--i:0"></div>
-          <div class="led" style="--i:1"></div>
-          <div class="led" style="--i:2"></div>
-          <div class="led" style="--i:3"></div>
-          <div class="led" style="--i:4"></div>
-          <div class="led" style="--i:5"></div>
-          <div class="led" style="--i:6"></div>
-          <div class="led" style="--i:7"></div>
-          <div class="led" style="--i:8"></div>
-          <div class="led" style="--i:9"></div>
-          <div class="led" style="--i:10"></div>
-          <div class="led" style="--i:11"></div>
-          <div class="led" style="--i:12"></div>
-          <div class="led" style="--i:13"></div>
-          <div class="led" style="--i:14"></div>
-          <div class="led" style="--i:15"></div>
-          <div class="led" style="--i:16"></div>
-          <div class="led" style="--i:17"></div>
-          <div class="led" style="--i:18"></div>
-          <div class="led" style="--i:19"></div>
-          <div class="led" style="--i:20"></div>
+      <div class="cards">
+        <div class="led-ring">
+          <div id="digit1" class="digit">–</div>
+          <div class="leds">
+            <!-- 20 LEDs -->
+            <div class="led" style="--i:0"></div>
+            <div class="led" style="--i:1"></div>
+            <div class="led" style="--i:2"></div>
+            <div class="led" style="--i:3"></div>
+            <div class="led" style="--i:4"></div>
+            <div class="led" style="--i:5"></div>
+            <div class="led" style="--i:6"></div>
+            <div class="led" style="--i:7"></div>
+            <div class="led" style="--i:8"></div>
+            <div class="led" style="--i:9"></div>
+            <div class="led" style="--i:10"></div>
+            <div class="led" style="--i:11"></div>
+            <div class="led" style="--i:12"></div>
+            <div class="led" style="--i:13"></div>
+            <div class="led" style="--i:14"></div>
+            <div class="led" style="--i:15"></div>
+            <div class="led" style="--i:16"></div>
+            <div class="led" style="--i:17"></div>
+            <div class="led" style="--i:18"></div>
+            <div class="led" style="--i:19"></div>
+            <div class="led" style="--i:20"></div>
+          </div>
         </div>
-      </div>
-      <div class="led-ring">
-        <div id="digit2" class="digit">–</div>
-        <div class="leds">
-          <!-- 20 LEDs -->
-          <div class="led" style="--i:0"></div>
-          <div class="led" style="--i:1"></div>
-          <div class="led" style="--i:2"></div>
-          <div class="led" style="--i:3"></div>
-          <div class="led" style="--i:4"></div>
-          <div class="led" style="--i:5"></div>
-          <div class="led" style="--i:6"></div>
-          <div class="led" style="--i:7"></div>
-          <div class="led" style="--i:8"></div>
-          <div class="led" style="--i:9"></div>
-          <div class="led" style="--i:10"></div>
-          <div class="led" style="--i:11"></div>
-          <div class="led" style="--i:12"></div>
-          <div class="led" style="--i:13"></div>
-          <div class="led" style="--i:14"></div>
-          <div class="led" style="--i:15"></div>
-          <div class="led" style="--i:16"></div>
-          <div class="led" style="--i:17"></div>
-          <div class="led" style="--i:18"></div>
-          <div class="led" style="--i:19"></div>
-          <div class="led" style="--i:20"></div>
+        <div class="led-ring">
+          <div id="digit2" class="digit">–</div>
+          <div class="leds">
+            <!-- 20 LEDs -->
+            <div class="led" style="--i:0"></div>
+            <div class="led" style="--i:1"></div>
+            <div class="led" style="--i:2"></div>
+            <div class="led" style="--i:3"></div>
+            <div class="led" style="--i:4"></div>
+            <div class="led" style="--i:5"></div>
+            <div class="led" style="--i:6"></div>
+            <div class="led" style="--i:7"></div>
+            <div class="led" style="--i:8"></div>
+            <div class="led" style="--i:9"></div>
+            <div class="led" style="--i:10"></div>
+            <div class="led" style="--i:11"></div>
+            <div class="led" style="--i:12"></div>
+            <div class="led" style="--i:13"></div>
+            <div class="led" style="--i:14"></div>
+            <div class="led" style="--i:15"></div>
+            <div class="led" style="--i:16"></div>
+            <div class="led" style="--i:17"></div>
+            <div class="led" style="--i:18"></div>
+            <div class="led" style="--i:19"></div>
+            <div class="led" style="--i:20"></div>
+          </div>
         </div>
-      </div>
-      <div class="led-ring">
-        <div id="digit3" class="digit">–</div>
-        <div class="leds">
-          <!-- 20 LEDs -->
-          <div class="led" style="--i:0"></div>
-          <div class="led" style="--i:1"></div>
-          <div class="led" style="--i:2"></div>
-          <div class="led" style="--i:3"></div>
-          <div class="led" style="--i:4"></div>
-          <div class="led" style="--i:5"></div>
-          <div class="led" style="--i:6"></div>
-          <div class="led" style="--i:7"></div>
-          <div class="led" style="--i:8"></div>
-          <div class="led" style="--i:9"></div>
-          <div class="led" style="--i:10"></div>
-          <div class="led" style="--i:11"></div>
-          <div class="led" style="--i:12"></div>
-          <div class="led" style="--i:13"></div>
-          <div class="led" style="--i:14"></div>
-          <div class="led" style="--i:15"></div>
-          <div class="led" style="--i:16"></div>
-          <div class="led" style="--i:17"></div>
-          <div class="led" style="--i:18"></div>
-          <div class="led" style="--i:19"></div>
-          <div class="led" style="--i:20"></div>
+        <div class="led-ring">
+          <div id="digit3" class="digit">–</div>
+          <div class="leds">
+            <!-- 20 LEDs -->
+            <div class="led" style="--i:0"></div>
+            <div class="led" style="--i:1"></div>
+            <div class="led" style="--i:2"></div>
+            <div class="led" style="--i:3"></div>
+            <div class="led" style="--i:4"></div>
+            <div class="led" style="--i:5"></div>
+            <div class="led" style="--i:6"></div>
+            <div class="led" style="--i:7"></div>
+            <div class="led" style="--i:8"></div>
+            <div class="led" style="--i:9"></div>
+            <div class="led" style="--i:10"></div>
+            <div class="led" style="--i:11"></div>
+            <div class="led" style="--i:12"></div>
+            <div class="led" style="--i:13"></div>
+            <div class="led" style="--i:14"></div>
+            <div class="led" style="--i:15"></div>
+            <div class="led" style="--i:16"></div>
+            <div class="led" style="--i:17"></div>
+            <div class="led" style="--i:18"></div>
+            <div class="led" style="--i:19"></div>
+            <div class="led" style="--i:20"></div>
+          </div>
         </div>
+        <!-- Copy the above two more times for digit2 and digit3 -->
       </div>
-      <!-- Copy the above two more times for digit2 and digit3 -->
-    </div>
 
-    <p id="result-status" style="margin-top: 20px; color: rgb(0, 204, 255); margin-left: 5%;"></p>
+      <p id="result-status" style="margin-top: 20px; color: white; margin-left: 1%;font-weight: bold;font-size: 22px;"></p>
   </section>
-
+  </div>
   <footer class="fade-in">
     <p>© 2025 Big Boss | All Rights Reserved</p>
   </footer>

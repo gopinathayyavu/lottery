@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,23 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="auth.js"></script>
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      /* background: linear-gradient(to bottom right, #d9f3ff, #ecfaff); */
+      background-image: url('assets/home-bg-small-.jpeg');
+      background-repeat: no-repeat;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      background-size: cover;
+    }
+  </style>
 </head>
+
 <body onload="protectAdminPage()">
   <header class="slide-down">
     <h1>BIG BOSS</h1>
@@ -109,4 +126,5 @@
     }
   </script>
 </body>
+
 </html>

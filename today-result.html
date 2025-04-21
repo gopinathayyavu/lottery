@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,38 +8,100 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      /* background: linear-gradient(to bottom right, #d9f3ff, #ecfaff); */
+      background-image: url('assets/today-result-bg.jpeg');
+      background-repeat: no-repeat;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      background-size: cover;
+    }
+
+    header {
+      width: 100%;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      z-index: 100;
+    }
+
+    .draw {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+      border: gold dotted 10px;
+      background: rgb(250, 27, 27);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      color: white;
+    }
+
     .draw-times {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0;
+      gap: 1rem;
+      margin-bottom: 2rem;
     }
+
     .draw-times button {
-      padding: 8px 16px;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
       font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #c9eaff, #a4d4ff);
+      color: #0077cc;
       border: none;
-      background: #eee;
-      border-radius: 6px;
+      border-radius: 12px;
       cursor: pointer;
+      box-shadow: 0 6px 12px rgba(0, 119, 204, 0.1);
+      transition: all 0.3s ease;
     }
+
+    .draw-times button:hover {
+      background: linear-gradient(135deg, #b0e2ff, #88c8ff);
+    }
+
     .draw-times button.active {
-      background: #222;
-      color: #fff;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 200, 255, 0.3);
     }
+
     .draw {
       display: none;
       text-align: center;
       margin-top: 20px;
     }
+
+    .draw.visible {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .draw.visible {
       display: block;
     }
+
     .prize {
       font-size: 24px;
       font-weight: bold;
       color: #222;
     }
+
     .not-available {
       font-size: 18px;
       color: #999;
@@ -46,6 +109,7 @@
     }
   </style>
 </head>
+
 <body>
   <header class="slide-down">
     <h1>BIG BOSS</h1>
@@ -166,4 +230,5 @@
     document.addEventListener('DOMContentLoaded', renderTodayResults);
   </script>
 </body>
+
 </html>
