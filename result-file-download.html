@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Result File Download - Big Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <style>
     .input-section {
       display: flex;
@@ -16,7 +15,6 @@
       margin: 30px auto 10px;
       flex-wrap: wrap;
     }
-
     .input-section input {
       padding: 10px 16px;
       font-size: 16px;
@@ -25,13 +23,11 @@
       flex: 1 1 200px;
       max-width: 250px;
     }
-
     .download-btns {
       display: flex;
       justify-content: center;
       margin-top: 10px;
     }
-
     .download-btns button {
       background: linear-gradient(90deg, #00c6ff, #0072ff);
       color: white;
@@ -44,149 +40,148 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-
     .download-btns button:hover {
       background: linear-gradient(90deg, #0072ff, #0050d4);
       box-shadow: 0 6px 20px rgba(0, 114, 255, 0.4);
     }
-
     @media (max-width: 600px) {
       .input-section input {
         width: 90%;
       }
-
       .download-btns button {
         width: 90%;
       }
     }
   </style>
 </head>
-
 <body>
 
-  <header class="slide-down">
-    <h1>BIG BOSS</h1>
-    <nav class="fade-in">
-      <a href="index.html">Home</a>
-      <a href="today-result.html">Today Result</a>
-      <a href="previous-result.html">Previous Result</a>
-      <a href="result-file-download.html" class="active">Result File Download</a>
-    </nav>
-  </header>
+<header class="slide-down">
+  <h1>BIG BOSS</h1>
+  <nav class="fade-in">
+    <a href="index.html">Home</a>
+    <a href="today-result.html">Today Result</a>
+    <a href="previous-result.html">Previous Result</a>
+    <a href="result-file-download.html" class="active">Result File Download</a>
+  </nav>
+</header>
 
-  <section class="fade-in">
-    <h2 style="text-align:center;">📥 Download Result File</h2>
+<section class="fade-in">
+  <h2 style="text-align:center;">📥 Download Result File</h2>
+  <div class="input-section">
+    <label for="from-date">From:</label>
+    <input type="date" id="from-date">
+    <label for="to-date">To:</label>
+    <input type="date" id="to-date">
+  </div>
+  <div class="download-btns">
+    <button onclick="downloadCSV()">Download CSV</button>
+  </div>
+  <p id="status" style="text-align:center; color: gray;"></p>
+</section>
 
-    <div class="input-section">
-      <label for="from-date">From:</label>
-      <input type="date" id="from-date">
-      <label for="to-date">To:</label>
-      <input type="date" id="to-date">
-    </div>
+<footer class="fade-in">
+  <p>© 2025 Big Boss | All Rights Reserved</p>
+</footer>
 
-    <div class="download-btns">
-      <button onclick="downloadCSV()">Download CSV</button>
-    </div>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-    <p id="status" style="text-align:center; color: gray;"></p>
-  </section>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
+    authDomain: "lottery-e05d5.firebaseapp.com",
+    databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
+    projectId: "lottery-e05d5",
+    storageBucket: "lottery-e05d5.appspot.com",
+    messagingSenderId: "357588305425",
+    appId: "1:357588305425:web:d1608265a0743fdda693b0"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-  <footer class="fade-in">
-    <p>© 2025 Big Boss | All Rights Reserved</p>
-  </footer>
+  const showTimes = [
+    { key: "10:00", label: "10:00 AM" },
+    { key: "11:00", label: "11:00 AM" },
+    { key: "12:00", label: "12:00 PM" },
+    { key: "13:00", label: "01:00 PM" },
+    { key: "17:00", label: "05:00 PM" },
+    { key: "18:00", label: "06:00 PM" },
+    { key: "19:00", label: "07:00 PM" },
+    { key: "20:00", label: "08:00 PM" }
+  ];
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  function getDateRange(start, end) {
+    const range = [];
+    let current = new Date(start);
+    const last = new Date(end);
+    while (current <= last) {
+      range.push(current.toISOString().split('T')[0]);
+      current.setDate(current.getDate() + 1);
+    }
+    return range;
+  }
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
-      authDomain: "lottery-e05d5.firebaseapp.com",
-      databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
-      projectId: "lottery-e05d5",
-      storageBucket: "lottery-e05d5.appspot.com",
-      messagingSenderId: "357588305425",
-      appId: "1:357588305425:web:d1608265a0743fdda693b0"
-    };
+  async function downloadCSV() {
+    const from = document.getElementById('from-date').value;
+    const to = document.getElementById('to-date').value;
+    const status = document.getElementById('status');
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    function formatTime12hr(timeStr) {
-      const [hour, minute] = timeStr.split(':');
-      const h = parseInt(hour);
-      const ampm = h >= 12 ? 'PM' : 'AM';
-      const hr12 = h % 12 || 12;
-      return `${hr12}:${minute} ${ampm}`;
+    status.innerText = '';
+    if (!from || !to) {
+      status.innerText = "⚠️ Please select both From and To dates.";
+      return;
     }
 
-    function getDateRange(startDate, endDate) {
-      const dateArray = [];
-      let current = new Date(startDate);
-      const stop = new Date(endDate);
-      while (current <= stop) {
-        dateArray.push(current.toISOString().split('T')[0]);
-        current.setDate(current.getDate() + 1);
+    status.innerText = "🔄 Fetching results...";
+    const range = getDateRange(from, to);
+    const dateMap = {};
+
+    for (const date of range) {
+      const snapshot = await db.ref('results/' + date).once('value');
+      const data = snapshot.val();
+      if (data) {
+        dateMap[date] = {};
+        Object.values(data).forEach(entry => {
+          dateMap[date][entry.time] = entry.number;
+        });
       }
-      return dateArray;
     }
 
-    async function downloadCSV() {
-      const from = document.getElementById('from-date').value;
-      const to = document.getElementById('to-date').value;
-      const status = document.getElementById('status');
-
-      status.innerText = '';
-      if (!from || !to) {
-        status.innerText = "⚠️ Please select both From and To dates.";
-        return;
-      }
-
-      status.innerText = "🔄 Fetching results...";
-
-      const range = getDateRange(from, to);
-      const allResults = [];
-
-      for (const date of range) {
-        const snapshot = await db.ref('results/' + date).once('value');
-        const data = snapshot.val();
-        if (data) {
-          Object.values(data).forEach(entry => {
-            allResults.push({
-              date,
-              time: entry.time,
-              number: entry.number
-            });
-          });
-        }
-      }
-
-      if (allResults.length === 0) {
-        status.innerText = "❌ No results found in the selected range.";
-        return;
-      }
-
-      allResults.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-
-      let csv = "Date,Draw Time,1st Prize,2nd Prize,3rd Prize\n";
-      allResults.forEach(entry => {
-        const time = formatTime12hr(entry.time);
-        const num = entry.number;
-        csv += `${entry.date},${time},${num},${num.slice(-2)},${num.slice(-1)}\n`;
-      });
-
-      const filename = `results_${from}_to_${to}.csv`;
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(url);
-
-      status.innerText = `✅ File "${filename}" downloaded.`;
+    if (Object.keys(dateMap).length === 0) {
+      status.innerText = "❌ No results found in the selected range.";
+      return;
     }
-  </script>
+
+    let csv = "S.No,Date," + showTimes.map(st => st.label).join(",") + "\n";
+    let i = 1;
+    for (const date of Object.keys(dateMap)) {
+      const row = [i++, date];
+      for (const st of showTimes) {
+        row.push(dateMap[date][st.key] || "-");
+      }
+      csv += row.join(",") + "\n";
+    }
+
+    const filename = `results_${from}_to_${to}.csv`;
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    status.innerText = `✅ File "${filename}" downloaded.`;
+  }
+
+  window.onload = () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const max = yesterday.toISOString().split("T")[0];
+    document.getElementById("from-date").setAttribute("max", max);
+    document.getElementById("to-date").setAttribute("max", max);
+  };
+</script>
 </body>
-
 </html>
