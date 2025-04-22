@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Previous Results - Big Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     body {
       font-family: 'Outfit', sans-serif;
-      /* background: linear-gradient(to bottom right, #d9f3ff, #ecfaff); */
       background-image: url('assets/previous-bg.jpeg');
       background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
       color: #1a1a1a;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       overflow-x: hidden;
-      background-size: cover;
     }
 
     header {
@@ -47,32 +46,36 @@
       border-radius: 6px;
     }
 
+    .table-responsive {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
     table {
-      width: 95%;
+      width: 100%;
+      max-width: 1000px;
       margin: 20px auto;
       border-collapse: collapse;
       border-radius: 12px;
-      overflow: hidden;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
       background: #fff;
+    }
+
+    th, td {
+      padding: 8px;
+      font-size: 13px;
+      text-align: center;
+      white-space: normal;
+      word-break: break-word;
     }
 
     th {
       background: #0153eb;
       color: #fff;
-      padding: 14px;
-      font-size: 14px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      white-space: nowrap;
-    }
-
-    td {
-      padding: 12px 16px;
-      font-size: 15px;
-      color: #333;
-      text-align: center;
-      white-space: nowrap;
     }
 
     tr:nth-child(even) td {
@@ -93,24 +96,13 @@
     }
 
     label {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: bold;
       color: gold;
       margin-right: 0.5rem;
     }
 
-    /* Mobile responsiveness only for small screens */
     @media (max-width: 768px) {
-      .table-responsive {
-        overflow-x: auto;
-        width: 100%;
-      }
-
-      .table-responsive table {
-        min-width: 900px;
-        font-size: 12px;
-      }
-
       .input-section {
         display: flex;
         flex-direction: column;
@@ -121,13 +113,20 @@
       .input-section input,
       .input-section button {
         width: 90%;
-        margin: 0;
-        font-size: 16px;
+        font-size: 15px;
       }
 
-      th,
-      td {
-        padding: 10px;
+      table {
+        font-size: 11px;
+      }
+
+      th, td {
+        padding: 6px;
+        font-size: 11px;
+      }
+
+      th {
+        font-size: 10px;
       }
     }
   </style>
@@ -246,7 +245,9 @@
 
       let i = 1;
       for (const date of Object.keys(dateMap)) {
-        html += `<tr><td>${i++}</td><td>${date}</td>`;
+        const [yyyy, mm, dd] = date.split("-");
+        const formattedDate = `${dd}-${mm}-${yyyy}`;
+        html += `<tr><td>${i++}</td><td>${formattedDate}</td>`;
         for (const show of showTimes) {
           html += `<td>${dateMap[date][show.key] || '-'}</td>`;
         }
@@ -266,5 +267,4 @@
     };
   </script>
 </body>
-
 </html>
