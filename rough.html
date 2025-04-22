@@ -8,39 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
-
     body {
       font-family: 'Outfit', sans-serif;
-      background-image: url('assets/home-page.gif');
-      background-repeat: no-repeat;
-      background-size: cover;
-      color: #1a1a1a;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      overflow-x: hidden;
-      align-items: center;
-    }
-
-    h1 {
-      font-size: 2.7rem;
-      color: gold;
-      font-weight: bold;
-      letter-spacing: 1px;
-      text-shadow: 0 1px 4px rgba(0, 119, 204, 0.1);
-      display: inline-block;
-      border: 2px solid gold;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    /* body {
-      font-family: 'Outfit', sans-serif;
+      /* background: linear-gradient(to bottom right, #d9f3ff, #ecfaff); */
       background-image: url('assets/home-page.gif');
       background-repeat: no-repeat;
       color: #1a1a1a;
@@ -50,18 +20,32 @@
       align-items: center;
       overflow-x: hidden;
       background-size: cover;
+    }
+
+    /* .digit {
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      margin-left: 6px;
+      margin-top: 6px;
+      color: white;
+      border-radius: 50%;
+      font-size: 2.5rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
     } */
 
     .draw-time-container {
-      display: flex;
-      gap: 15px;
       justify-content: center;
       padding: 10px;
-      flex-wrap: wrap;
-      margin-top: 5%;
+      max-width: 300px;
     }
 
-    .draw-box {
+    .draw-time {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #f1faee;
       font-size: 16px;
@@ -72,11 +56,9 @@
       backdrop-filter: blur(5px);
       letter-spacing: 1px;
       text-align: center;
-      min-width: 180px;
     }
 
-    #drawTime,
-    #remainingTime {
+    #drawTime {
       color: #ffdd57;
       font-weight: bold;
       font-size: 18px;
@@ -93,7 +75,6 @@
       height: 30px;
       justify-content: center;
       align-items: center;
-      margin-top: 5%;
     }
 
     .blinking-border::before {
@@ -133,204 +114,27 @@
       justify-content: center;
       align-items: center;
     }
-
-    footer {
-      margin-top: 50px;
-      color: white;
-    }
-
-    .main-section {
-      margin-top: 5%;
-    }
-
-    .main-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 10%;
-      width: 90%;
-      max-width: 800px;
-      border-radius: 20px;
-      border: 10px dotted gold!;
-      color: white;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
-    }
-
-    .main-container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: url('assets/home-page.gif');
-      background-size: cover;
-      background-position: center;
-      filter: blur(5px);
-      transform: scale(1.1);
-      z-index: 0;
-    }
-
-    .main-container>* {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Small Devices (Phones) */
-    @media (max-width: 480px) {
-      .main-section {
-        margin-top: -10%;
-      }
-
-      .main-container {
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        padding: 10%;
-        border-radius: 5%;
-        width: 85%;
-        margin-left: 30px;
-      }
-    }
-
-    /* Medium Devices (Tablets) */
-    @media (min-width: 481px) and (max-width: 1024px) {
-      /* tablet styles */
-    }
-
-    /* Large Devices (Desktops) */
-    @media (min-width: 1025px) {
-      .main-section {
-        margin-top: -10%;
-      }
-    }
-
-    .blinking-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 30px;
-      margin-top: 15px;
-    }
-
-    .digit-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .led-label {
-      font-size: 24px;
-      font-weight: 900;
-      font-family: 'Outfit', sans-serif;
-      text-shadow: 0 0 8px currentColor;
-      animation: glow 1.5s ease-in-out infinite;
-    }
-
-    /* Color styles for each letter */
-    .led-label.a {
-      color: gold;
-    }
-
-    .led-label.b {
-      color: orange;
-    }
-
-    .led-label.c {
-      color: #00ccff;
-    }
-
-    /* Glowing pulse animation */
-    @keyframes glow {
-
-      0%,
-      100% {
-        text-shadow:
-          0 0 5px currentColor,
-          0 0 10px currentColor,
-          0 0 20px currentColor;
-      }
-
-      50% {
-        text-shadow:
-          0 0 3px currentColor,
-          0 0 6px currentColor;
-      }
-    }
-
-    /* Blinking border setup (keep your existing one or paste below) */
-    .blinking-border {
-      display: flex;
-      position: relative;
-      padding: 40px;
-      background-color: black;
-      border-radius: 50%;
-      text-align: center;
-      width: 30px;
-      height: 30px;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .blinking-border::before {
-      content: "";
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-      border: 10px dotted gold;
-      border-radius: 50%;
-      animation: blinkBorder 0.6s infinite;
-    }
-
-    @keyframes blinkBorder {
-
-      0%,
-      100% {
-        border-color: gold;
-      }
-
-      50% {
-        border-color: transparent;
-      }
-    }
-
-    .digit {
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-      z-index: 1;
-    }
   </style>
 </head>
 
 <body>
   <header class="slide-down">
+
     <nav class="fade-in">
       <a href="index.html">Home</a>
       <a href="today-result.html">Today Result</a>
       <a href="previous-result.html">Previous Result</a>
       <a href="result-file-download.html">Result File Download</a>
+      <!-- <a href="admin.html">Admin</a> -->
     </nav>
   </header>
-  <section class="main-section fade-in">
+  <h1>BIG BOSS</h1>
+  <section class="draw-section fade-in">
     <div class="main-container">
-      <div>
-        <h1>BIG BOSS</h1>
-      </div>
       <div class="draw-time-container">
-        <div class="draw-box">Draw Time: <span id="drawTime">--:--</span></div>
-        <div class="draw-box">Remaining: <span id="remainingTime">--</span></div>
+        <div class="draw-time">Draw Time: <span id="drawTime">--:--</span></div>
       </div>
-
-      <!-- <div class="blinking-row">
+      <div class="blinking-row">
         <div class="blinking-border">
           <div id="digit1" class="digit">–</div>
         </div>
@@ -340,43 +144,14 @@
         <div class="blinking-border">
           <div id="digit3" class="digit">–</div>
         </div>
-      </div> -->
-
-      <div class="blinking-row">
-        <div class="digit-container">
-          <!-- <div class="led-label a"></div> -->
-          <img height="50px" src="assets/A.png" alt="">
-          <div class="blinking-border">
-            <div id="digit1" class="digit">–</div>
-          </div>
-        </div>
-        <div class="digit-container">
-          <!-- <div class="led-label b">B</div> -->
-          <img height="50px" src="assets/B.png" alt="">
-          <div class="blinking-border">
-            <div id="digit2" class="digit">–</div>
-          </div>
-        </div>
-        <div class="digit-container">
-          <!-- <div class="led-label c">C</div> -->
-          <img height="50px" src="assets/C.png" alt="">
-          <div class="blinking-border">
-            <div id="digit3" class="digit">–</div>
-          </div>
-        </div>
       </div>
-      <div style="margin-top: 10%;">
-        <h2 style="color: white;font-size: 40px;">3 Digit Game</h2>
-      </div>
-      <!-- <p id="result-status" style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p> -->
-
-    </div>
+      <p id="result-status" style="margin-top: 20px; color: white; font-weight: bold;font-size: 22px;">
+      </p>
   </section>
-
+  </div>
   <footer class="fade-in">
     <p>© 2025 Big Boss | All Rights Reserved</p>
   </footer>
-
   <audio id="bg-music" autoplay loop>
     <source src="assets/music-for-page.mp3" type="audio/mpeg">
   </audio>
@@ -398,6 +173,7 @@
     });
   </script>
 
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
@@ -407,7 +183,7 @@
       authDomain: "lottery-e05d5.firebaseapp.com",
       databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
       projectId: "lottery-e05d5",
-      storageBucket: "lottery-e05d5.appspot.com",
+      storageBucket: "lottery-e05d5.firebasestorage.app",
       messagingSenderId: "357588305425",
       appId: "1:357588305425:web:d1608265a0743fdda693b0",
       measurementId: "G-GE938RN0DB"
@@ -426,11 +202,9 @@
 
     function formatCountdown(ms) {
       if (ms < 0) return "Result time passed";
-      const totalSecs = Math.floor(ms / 1000);
-      const hrs = Math.floor(totalSecs / 3600);
-      const mins = Math.floor((totalSecs % 3600) / 60);
-      const secs = totalSecs % 60;
-      return `${hrs > 0 ? hrs + 'h ' : ''}${mins}m ${secs}s`;
+      const mins = Math.floor(ms / 60000);
+      const secs = Math.floor((ms % 60000) / 1000);
+      return `${mins}m ${secs}s remaining`;
     }
 
     function updateCard(number) {
@@ -448,11 +222,9 @@
         const results = snapshot.val();
         const status = document.getElementById('result-status');
         const drawTimeEl = document.getElementById('drawTime');
-        const remainingEl = document.getElementById('remainingTime');
 
         if (!results) {
           drawTimeEl.innerText = '--:--';
-          remainingEl.innerText = '--';
           status.innerText = "⏳ No draws available yet.";
           updateCard('–––');
           return;
@@ -482,11 +254,9 @@
         if (nextDraw) {
           const nextTime = new Date(today + 'T' + nextDraw.time + ':00');
           const timeDiff = nextTime - now;
-          drawTimeEl.innerText = formatTime12hr(nextDraw.time);
-          remainingEl.innerText = formatCountdown(timeDiff);
+          drawTimeEl.innerText = `${formatTime12hr(nextDraw.time)} (${formatCountdown(timeDiff)})`;
         } else if (!currentDraw) {
           drawTimeEl.innerText = '--:--';
-          remainingEl.innerText = '--';
         }
       }).catch(err => {
         console.error(err);
@@ -496,9 +266,12 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       fetchLatestDraw();
-      setInterval(fetchLatestDraw, 1000);
+      setInterval(fetchLatestDraw, 1000); // Refresh every 10 seconds
     });
   </script>
+
+
+
 </body>
 
 </html>

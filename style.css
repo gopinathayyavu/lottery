@@ -87,17 +87,7 @@ header h1 {
   border-radius: 4px; /* optional: for smooth corners */
 }
 
-h1 {
-  font-size: 2.7rem;
-  color: gold;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-shadow: 0 1px 4px rgba(0, 119, 204, 0.1);
-  display: inline-block; /* this ensures the border wraps only the text */
-  border: 2px solid gold;
-  padding: 2px 6px; /* minimal padding to avoid squishing the text */
-  border-radius: 4px; /* optional: for smooth corners */
-}
+
 
 
 /* Nav */
@@ -127,18 +117,6 @@ nav a:hover {
   box-shadow: 0 6px 20px rgba(0, 119, 204, 0.25);
 }
 
-/* Draw Section */
-.draw-section {
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  text-align: left;
-  padding: 1rem;
-  width: 100%;
-  max-width: 700px;
-  margin-left: 20%;
-}
-
 .draw-time {
   font-size: 1.5rem;
   margin-bottom: 1.8rem;
@@ -146,51 +124,6 @@ nav a:hover {
   margin-left: 10%;
 }
 
-/* Cards */
-/* .cards {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: 0 1rem;
-}
-
-.cards::-webkit-scrollbar {
-  height: 6px;
-}
-
-.cards::-webkit-scrollbar-thumb {
-  background: #cde9ff;
-  border-radius: 6px;
-}
-
-.cards::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.card {
-  min-width: 100px;
-  height: 100px;
-  background: #ffffff;
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #007aff;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
-  transition: all 0.35s ease;
-  transform-origin: center;
-  position: relative;
-}
-
-.card:hover {
-  transform: scale(1.08) rotate(-1deg);
-  box-shadow: 0 20px 40px rgba(0, 132, 255, 0.25);
-  background: #f8fcff;
-} */
 
 /* Footer */
 footer {
