@@ -7,6 +7,7 @@
   <title>Big Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     html,
     body {
@@ -153,7 +154,7 @@
       width: 90%;
       max-width: 800px;
       border-radius: 20px;
-      border: 10px dotted gold!;
+      border: 10px dotted gold !;
       color: white;
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(30px);
@@ -321,7 +322,8 @@
     </nav>
   </header>
   <section class="main-section fade-in">
-    <div class="main-container">
+    <button class="download-btn" onclick="downloadScreenshot()">Download Screenshot</button>
+    <div id="capture-area" class="main-container">
       <div>
         <h1>BIG BOSS</h1>
       </div>
@@ -376,6 +378,46 @@
   <footer class="fade-in">
     <p>© 2025 Big Boss | All Rights Reserved</p>
   </footer>
+  <script>
+    function downloadScreenshot() {
+      const original = document.getElementById("capture-area");
+  
+      // Create a wrapper to hold cloned version
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "fixed";
+      wrapper.style.top = "0";
+      wrapper.style.left = "-9999px";
+      wrapper.style.zIndex = "-1";
+      wrapper.style.width = original.offsetWidth + "px";
+      wrapper.style.height = original.offsetHeight + "px";
+  
+      // Correct way to add blur filters
+      wrapper.style.backdropFilter = "blur(30px)";
+      wrapper.style["-webkit-backdrop-filter"] = "blur(30px)";
+  
+      document.body.appendChild(wrapper);
+  
+      const clone = original.cloneNode(true);
+      wrapper.appendChild(clone);
+  
+      html2canvas(clone, {
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        scale: 2
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "big-boss-screenshot.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+  
+        // Cleanup after download
+        document.body.removeChild(wrapper);
+      });
+    }
+  </script>
+  
+  
 
   <audio id="bg-music" autoplay loop>
     <source src="assets/music-for-page.mp3" type="audio/mpeg">
