@@ -324,7 +324,6 @@
     </nav>
   </header>
   <section class="main-section fade-in">
-    <!-- <button class="download-btn" onclick="downloadScreenshot()">Download Screenshot</button> -->
     <div class="main-container">
       <div id="screenshot-area" class="download-icon">
         <div>
@@ -335,35 +334,20 @@
           <div class="draw-box">Remaining: <span id="remainingTime">--</span></div>
         </div>
 
-        <!-- <div class="blinking-row">
-        <div class="blinking-border">
-          <div id="digit1" class="digit">–</div>
-        </div>
-        <div class="blinking-border">
-          <div id="digit2" class="digit">–</div>
-        </div>
-        <div class="blinking-border">
-          <div id="digit3" class="digit">–</div>
-        </div>
-      </div> -->
-
         <div class="blinking-row">
           <div class="digit-container">
-            <!-- <div class="led-label a"></div> -->
             <img height="50px" src="assets/A.png" alt="">
             <div class="blinking-border">
               <div id="digit1" class="digit">–</div>
             </div>
           </div>
           <div class="digit-container">
-            <!-- <div class="led-label b">B</div> -->
             <img height="50px" src="assets/B.png" alt="">
             <div class="blinking-border">
               <div id="digit2" class="digit">–</div>
             </div>
           </div>
           <div class="digit-container">
-            <!-- <div class="led-label c">C</div> -->
             <img height="50px" src="assets/C.png" alt="">
             <div class="blinking-border">
               <div id="digit3" class="digit">–</div>
@@ -387,15 +371,14 @@
   <script>
     function downloadScreenshot() {
       const original = document.getElementById("screenshot-area");
-  
-      // Create a hidden wrapper to clone content
+
       const wrapper = document.createElement("div");
       wrapper.style.position = "fixed";
       wrapper.style.top = "-9999px";
       wrapper.style.left = "-9999px";
       wrapper.style.width = original.offsetWidth + "px";
       wrapper.style.height = original.offsetHeight + "px";
-      wrapper.style.backgroundImage = "url('assets/home-page.gif')"; // ✅ set same as body
+      wrapper.style.backgroundImage = "url('assets/home-page.gif')";
       wrapper.style.backgroundSize = "cover";
       wrapper.style.backgroundPosition = "center";
       wrapper.style.alignItems = "center";
@@ -403,12 +386,11 @@
       wrapper.style.textAlign = "center";
       wrapper.style.padding = window.getComputedStyle(original).padding;
       wrapper.style.borderRadius = window.getComputedStyle(original).borderRadius;
-  
+
       const clone = original.cloneNode(true);
       wrapper.appendChild(clone);
       document.body.appendChild(wrapper);
-  
-      // Delay screenshot to allow rendering
+
       setTimeout(() => {
         html2canvas(wrapper, {
           useCORS: true,
@@ -419,7 +401,7 @@
           link.download = "big-boss.png";
           link.href = canvas.toDataURL("image/png");
           link.click();
-          document.body.removeChild(wrapper); // clean up
+          document.body.removeChild(wrapper);
         }).catch(err => {
           alert("Screenshot failed: " + err);
           document.body.removeChild(wrapper);
@@ -443,7 +425,6 @@
           }, { once: true });
         });
       };
-
       tryPlay();
     });
   </script>
