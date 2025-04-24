@@ -155,7 +155,6 @@
       width: 90%;
       max-width: 800px;
       border-radius: 20px;
-      border: 10px dotted gold !;
       color: white;
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(30px);
@@ -198,6 +197,7 @@
         border-radius: 5%;
         width: 85%;
         margin-left: 30px;
+        margin-top: 5%;
       }
     }
 
@@ -311,11 +311,6 @@
       color: white;
       z-index: 1;
     }
-
-    .download-icon {
-      cursor: pointer;
-      left: 65% !important;
-    }
   </style>
 </head>
 
@@ -330,19 +325,17 @@
   </header>
   <section class="main-section fade-in">
     <!-- <button class="download-btn" onclick="downloadScreenshot()">Download Screenshot</button> -->
-    <div id="capture" class="main-container">
-      <div class="download-icon">
-      </div>
-      <div>
+    <div class="main-container">
+      <div id="screenshot-area" class="download-icon">
+        <div>
+          <h1>BIG BOSS</h1>
+        </div>
+        <div class="draw-time-container">
+          <div class="draw-box">Draw Time: <span id="drawTime">--:--</span></div>
+          <div class="draw-box">Remaining: <span id="remainingTime">--</span></div>
+        </div>
 
-        <h1>BIG BOSS</h1>
-      </div>
-      <div class="draw-time-container">
-        <div class="draw-box">Draw Time: <span id="drawTime">--:--</span></div>
-        <div class="draw-box">Remaining: <span id="remainingTime">--</span></div>
-      </div>
-
-      <!-- <div class="blinking-row">
+        <!-- <div class="blinking-row">
         <div class="blinking-border">
           <div id="digit1" class="digit">–</div>
         </div>
@@ -354,33 +347,34 @@
         </div>
       </div> -->
 
-      <div class="blinking-row">
-        <div class="digit-container">
-          <!-- <div class="led-label a"></div> -->
-          <img height="50px" src="assets/A.png" alt="">
-          <div class="blinking-border">
-            <div id="digit1" class="digit">–</div>
+        <div class="blinking-row">
+          <div class="digit-container">
+            <!-- <div class="led-label a"></div> -->
+            <img height="50px" src="assets/A.png" alt="">
+            <div class="blinking-border">
+              <div id="digit1" class="digit">–</div>
+            </div>
+          </div>
+          <div class="digit-container">
+            <!-- <div class="led-label b">B</div> -->
+            <img height="50px" src="assets/B.png" alt="">
+            <div class="blinking-border">
+              <div id="digit2" class="digit">–</div>
+            </div>
+          </div>
+          <div class="digit-container">
+            <!-- <div class="led-label c">C</div> -->
+            <img height="50px" src="assets/C.png" alt="">
+            <div class="blinking-border">
+              <div id="digit3" class="digit">–</div>
+            </div>
           </div>
         </div>
-        <div class="digit-container">
-          <!-- <div class="led-label b">B</div> -->
-          <img height="50px" src="assets/B.png" alt="">
-          <div class="blinking-border">
-            <div id="digit2" class="digit">–</div>
-          </div>
-        </div>
-        <div class="digit-container">
-          <!-- <div class="led-label c">C</div> -->
-          <img height="50px" src="assets/C.png" alt="">
-          <div class="blinking-border">
-            <div id="digit3" class="digit">–</div>
-          </div>
+        <div style="margin-top: 10%;">
+          <h2 style="color: white;font-size: 40px;">3 Digit Game</h2>
         </div>
       </div>
-      <div style="margin-top: 10%;">
-        <h2 style="color: white;font-size: 40px;">3 Digit Game</h2>
-      </div>
-      <button class="download-btn" onclick="captureDiv()">Download</button>
+      <button class="download-btn" onclick="downloadScreenshot()">Download</button>
       <!-- <p id="result-status" style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p> -->
 
     </div>
@@ -389,19 +383,50 @@
   <footer class="fade-in">
     <p>© 2025 Big Boss | All Rights Reserved</p>
   </footer>
+
   <script>
-    function captureDiv() {
-      html2canvas(document.getElementById("capture")).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "Big Boss Result.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
+    function downloadScreenshot() {
+      const original = document.getElementById("screenshot-area");
+  
+      // Create a hidden wrapper to clone content
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "fixed";
+      wrapper.style.top = "-9999px";
+      wrapper.style.left = "-9999px";
+      wrapper.style.width = original.offsetWidth + "px";
+      wrapper.style.height = original.offsetHeight + "px";
+      wrapper.style.backgroundImage = "url('assets/home-page.gif')"; // ✅ set same as body
+      wrapper.style.backgroundSize = "cover";
+      wrapper.style.backgroundPosition = "center";
+      wrapper.style.alignItems = "center";
+      wrapper.style.justifyContent = "center";
+      wrapper.style.textAlign = "center";
+      wrapper.style.padding = window.getComputedStyle(original).padding;
+      wrapper.style.borderRadius = window.getComputedStyle(original).borderRadius;
+  
+      const clone = original.cloneNode(true);
+      wrapper.appendChild(clone);
+      document.body.appendChild(wrapper);
+  
+      // Delay screenshot to allow rendering
+      setTimeout(() => {
+        html2canvas(wrapper, {
+          useCORS: true,
+          backgroundColor: null,
+          scale: 2
+        }).then(canvas => {
+          const link = document.createElement("a");
+          link.download = "big-boss.png";
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+          document.body.removeChild(wrapper); // clean up
+        }).catch(err => {
+          alert("Screenshot failed: " + err);
+          document.body.removeChild(wrapper);
+        });
+      }, 300);
     }
   </script>
-
-
-
   <audio id="bg-music" autoplay loop>
     <source src="assets/music-for-page.mp3" type="audio/mpeg">
   </audio>

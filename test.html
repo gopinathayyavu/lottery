@@ -2,57 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blinking Border Only</title>
+  <title>Screenshot Div</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #111;
-      font-family: 'Arial', sans-serif;
-    }
-
-    .blinking-border {
-      position: relative;
-      padding: 40px;
-      background-color: #fff8e7;
-      border-radius: 200px;
+      font-family: Arial, sans-serif;
+      padding: 20px;
       text-align: center;
-      width: 30px;
-      height: 30px;
     }
 
-    .blinking-border::before {
-      content: "";
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-      border: 10px dotted gold;
-      border-radius: 200px;
-      z-index: -1;
-      animation: blinkBorder 0.6s infinite;
+    #capture {
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 2px dashed #000;
+      border-radius: 10px;
     }
 
-    @keyframes blinkBorder {
-      0%, 100% {
-        border-color: gold;
-      }
-      50% {
-        border-color: transparent;
-      }
+    #screenshot-result img {
+      margin-top: 20px;
+      max-width: 100%;
+      border: 2px solid #555;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <div class="blinking-border">
-    
+  <div id="capture">
+    <h2>Capture Me</h2>
+    <p>This part will be captured as a screenshot image.</p>
   </div>
+
+  <button onclick="captureDiv()">Take Screenshot</button>
+
+  <div id="screenshot-result"></div>
+
+  <script>
+    function captureDiv() {
+      const element = document.getElementById("capture");
+
+      html2canvas(element, {
+        useCORS: true,
+        allowTaint: true,
+        scale: 2
+      }).then(canvas => {
+        // Convert canvas to image
+        const imgData = canvas.toDataURL("image/png");
+
+        // Show result on page
+        const result = document.getElementById("screenshot-result");
+        result.innerHTML = `<h3>Screenshot:</h3><img src="${imgData}" alt="Screenshot"/>`;
+
+        // Optional: download
+        // const link = document.createElement("a");
+        // link.download = "screenshot.png";
+        // link.href = imgData;
+        // link.click();
+      }).catch(err => {
+        alert("Screenshot failed: " + err);
+        console.error(err);
+      });
+    }
+  </script>
 
 </body>
 </html>
