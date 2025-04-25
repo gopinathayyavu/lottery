@@ -335,12 +335,13 @@
             </div>
           </div>
         </div>
+        <p id="result-status" style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
         <div style="margin-top: 10%;">
           <h2 style="color: white;font-size: 40px;">3 Digit Game</h2>
         </div>
       </div>
       <button class="download-btn" onclick="downloadScreenshot()">Download</button>
-      <!-- <p id="result-status" style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p> -->
+      
 
     </div>
   </section>
@@ -348,7 +349,24 @@
   <footer class="fade-in">
     <p>© 2025 Big Boss | All Rights Reserved</p>
   </footer>
+  <!-- <script>
+    const digit = document.getElementById('digit1');
+    const digit1 = document.getElementById('digit2');
+    const digit2 = document.getElementById('digit3');
 
+    setInterval(() => {
+      const randomDigit = Math.floor(Math.random() * 10); // 0 to 9
+      digit.textContent = randomDigit;
+    }, 100);
+    setInterval(() => {
+      const randomDigit = Math.floor(Math.random() * 10); // 0 to 9
+      digit1.textContent = randomDigit;
+    }, 102);
+    setInterval(() => {
+      const randomDigit = Math.floor(Math.random() * 10);
+      digit2.textContent = randomDigit;
+    }, 105);
+  </script> -->
   <script>
     function downloadScreenshot() {
       const original = document.getElementById("screenshot-area");
@@ -413,7 +431,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-  <script>
+  <!-- <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
       authDomain: "lottery-e05d5.firebaseapp.com",
@@ -510,7 +528,147 @@
       fetchLatestDraw();
       setInterval(fetchLatestDraw, 1000);
     });
+  </script> -->
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcmamLjhZh8x6wRAiDeEtuB_Mky2tCOkI",
+      authDomain: "lottery-e05d5.firebaseapp.com",
+      databaseURL: "https://lottery-e05d5-default-rtdb.firebaseio.com",
+      projectId: "lottery-e05d5",
+      storageBucket: "lottery-e05d5.appspot.com",
+      messagingSenderId: "357588305425",
+      appId: "1:357588305425:web:d1608265a0743fdda693b0",
+      measurementId: "G-GE938RN0DB"
+    };
+  
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+  
+    let randomInterval1, randomInterval2, randomInterval3;
+    let isRunning = false;
+  
+    const digit = document.getElementById('digit1');
+    const digit1 = document.getElementById('digit2');
+    const digit2 = document.getElementById('digit3');
+  
+    function startRandomRun() {
+      if (isRunning) return;
+      isRunning = true;
+      randomInterval1 = setInterval(() => {
+        digit.textContent = Math.floor(Math.random() * 10);
+      }, 100);
+      randomInterval2 = setInterval(() => {
+        digit1.textContent = Math.floor(Math.random() * 10);
+      }, 102);
+      randomInterval3 = setInterval(() => {
+        digit2.textContent = Math.floor(Math.random() * 10);
+      }, 105);
+    }
+  
+    function stopRandomRun(number) {
+      clearInterval(randomInterval1);
+      clearInterval(randomInterval2);
+      clearInterval(randomInterval3);
+      isRunning = false;
+      digit.textContent = number[0];
+      digit1.textContent = number[1];
+      digit2.textContent = number[2];
+    }
+  
+    function formatTime12hr(timeStr) {
+      const [hour, minute] = timeStr.split(':');
+      const h = parseInt(hour);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hr12 = h % 12 || 12;
+      return `${hr12}:${minute} ${ampm}`;
+    }
+  
+    function formatCountdown(ms) {
+      if (ms < 0) return "Result time passed";
+      const totalSecs = Math.floor(ms / 1000);
+      const hrs = Math.floor(totalSecs / 3600);
+      const mins = Math.floor((totalSecs % 3600) / 60);
+      const secs = totalSecs % 60;
+      return `${hrs > 0 ? hrs + 'h ' : ''}${mins}m ${secs}s`;
+    }
+  
+    function fetchLatestDraw() {
+      const today = new Date().toISOString().split('T')[0];
+      const now = new Date();
+      const currentTime = now.toTimeString().slice(0, 5);
+  
+      db.ref('results/' + today).once('value').then(snapshot => {
+        const results = snapshot.val();
+        const status = document.getElementById('result-status');
+        const drawTimeEl = document.getElementById('drawTime');
+        const remainingEl = document.getElementById('remainingTime');
+  
+        if (!results) {
+          drawTimeEl.innerText = '--:--';
+          remainingEl.innerText = '--';
+          status.innerText = "⏳ No draws available yet.";
+          startRandomRun();
+          return;
+        }
+  
+        const entries = Object.values(results).sort((a, b) => a.time.localeCompare(b.time));
+        let currentDraw = null;
+        let nextDraw = null;
+  
+        for (const entry of entries) {
+          if (entry.time <= currentTime) {
+            currentDraw = entry;
+          } else if (!nextDraw) {
+            nextDraw = entry;
+          }
+        }
+  
+        const nowTime = now.getTime();
+        const nextDrawTime = nextDraw
+          ? new Date(`${today}T${nextDraw.time}:00`)
+          : null;
+  
+        const fiveMinBeforeNext = nextDrawTime
+          ? new Date(nextDrawTime.getTime() - 5 * 60 * 1000)
+          : null;
+  
+        if (nextDraw) {
+          // ✅ Always show upcoming draw time
+          drawTimeEl.innerText = formatTime12hr(nextDraw.time);
+          const diff = nextDrawTime - now;
+          remainingEl.innerText = formatCountdown(diff);
+        } else if (currentDraw) {
+          drawTimeEl.innerText = formatTime12hr(currentDraw.time);
+          remainingEl.innerText = "No more draws today";
+        } else {
+          drawTimeEl.innerText = '--:--';
+          remainingEl.innerText = '--';
+        }
+  
+        // 🎯 Logic for showing actual result or random digits
+        if (currentDraw && (!nextDrawTime || now < fiveMinBeforeNext)) {
+          stopRandomRun(currentDraw.number);
+          status.innerText = `✅ Result for ${formatTime12hr(currentDraw.time)} announced`;
+        } else {
+          startRandomRun();
+          status.innerText = nextDraw
+            ? `🔁 Randomizing before ${formatTime12hr(nextDraw.time)} draw`
+            : "🔁 Waiting for next result...";
+        }
+      }).catch(err => {
+        console.error(err);
+        document.getElementById('result-status').innerText = '❌ Error fetching result.';
+      });
+    }
+  
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchLatestDraw();
+      setInterval(fetchLatestDraw, 1000);
+    });
   </script>
+  
+
 </body>
 
 </html>
