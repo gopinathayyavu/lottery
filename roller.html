@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lottery Roller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: radial-gradient(#1e1e1e, #000);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .roller-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .digit-box {
+            background: #111;
+            border: 5px solid gold;
+            border-radius: 15px;
+            width: 100px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: gold;
+            box-shadow: 0 0 30px gold;
+        }
+
+        /* .led-border {
+            border: 10px dotted gold;
+            border-radius: 15px;
+        } */
+
+        .led-border {
+            display: flex;
+            position: relative;
+            background-color: #000000;
+            border-radius: 15px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .led-border::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 10px dotted gold;
+            border-radius: 15px;
+            animation: blinkBorder 0.6s infinite;
+        }
+
+        @keyframes blinkBorder {
+
+            0%,
+            100% {
+                border-color: gold;
+            }
+
+            50% {
+                border-color: transparent;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="roller-container">
+        <div class="led-border">
+            <div class="digit-box" id="digit1">0</div>
+        </div>
+        <div class="led-border">
+            <div class="digit-box" id="digit2">0</div>
+        </div>
+
+        <div class="led-border">
+            <div class="digit-box" id="digit3">0</div>
+        </div>
+
+    </div>
+
+    <script>
+        const finalResult = [5, 6, 7];
+        const digits = [
+            document.getElementById('digit1'),
+            document.getElementById('digit2'),
+            document.getElementById('digit3')
+        ];
+
+        function startRolling() {
+            let intervals = [];
+
+            digits.forEach((digitBox, index) => {
+                let count = 0;
+                intervals[index] = setInterval(() => {
+                    digitBox.textContent = Math.floor(Math.random() * 10);
+                    count++;
+
+                    if (count > 20 + index * 10) { // staggered stop
+                        clearInterval(intervals[index]);
+                        digitBox.textContent = finalResult[index];
+                    }
+                }, 100);
+            });
+        }
+
+        // Start automatically after short delay
+        setTimeout(() => {
+            startRolling();
+        }, 10); // Starts after 5 seconds
+    </script>
+</body>
+
+</html>
