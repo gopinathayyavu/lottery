@@ -314,7 +314,6 @@
           <div class="draw-box">Draw Time: <span id="drawTime">--:--</span></div>
           <div class="draw-box no-screenshot">Remaining: <span id="remainingTime">--</span></div>
         </div>
-
         <div class="blinking-row">
           <div class="digit-container">
             <img height="50px" src="assets/A.png" alt="">
@@ -335,13 +334,14 @@
             </div>
           </div>
         </div>
-        <p id="result-status" class="no-screenshot" style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
+        <p id="result-status" class="no-screenshot"
+          style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
         <div style="margin-top: 10%;">
           <h2 style="color: white;font-size: 40px;">3 Digit Game</h2>
         </div>
       </div>
       <button class="download-btn" id="download-btn">Download</button>
-      
+
 
     </div>
   </section>
@@ -351,67 +351,6 @@
   </footer>
 
   <!-- <script>
-    const digit = document.getElementById('digit1');
-    const digit1 = document.getElementById('digit2');
-    const digit2 = document.getElementById('digit3');
-
-    setInterval(() => {
-      const randomDigit = Math.floor(Math.random() * 10); // 0 to 9
-      digit.textContent = randomDigit;
-    }, 100);
-    setInterval(() => {
-      const randomDigit = Math.floor(Math.random() * 10); // 0 to 9
-      digit1.textContent = randomDigit;
-    }, 102);
-    setInterval(() => {
-      const randomDigit = Math.floor(Math.random() * 10);
-      digit2.textContent = randomDigit;
-    }, 105);
-  </script> -->
-  
-  <!-- <script>
-    function downloadScreenshot() {
-      const original = document.getElementById("screenshot-area");
-
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "fixed";
-      wrapper.style.top = "-9999px";
-      wrapper.style.left = "-9999px";
-      wrapper.style.width = original.offsetWidth + "px";
-      wrapper.style.height = original.offsetHeight + "px";
-      wrapper.style.backgroundImage = "url('assets/home-page.gif')";
-      wrapper.style.backgroundSize = "cover";
-      wrapper.style.backgroundPosition = "center";
-      wrapper.style.alignItems = "center";
-      wrapper.style.justifyContent = "center";
-      wrapper.style.textAlign = "center";
-      wrapper.style.padding = window.getComputedStyle(original).padding;
-      wrapper.style.borderRadius = window.getComputedStyle(original).borderRadius;
-
-      const clone = original.cloneNode(true);
-      wrapper.appendChild(clone);
-      document.body.appendChild(wrapper);
-
-      setTimeout(() => {
-        html2canvas(wrapper, {
-          useCORS: true,
-          backgroundColor: null,
-          scale: 2
-        }).then(canvas => {
-          const link = document.createElement("a");
-          link.download = "big-boss.png";
-          link.href = canvas.toDataURL("image/png");
-          link.click();
-          document.body.removeChild(wrapper);
-        }).catch(err => {
-          alert("Screenshot failed: " + err);
-          document.body.removeChild(wrapper);
-        });
-      }, 300);
-    }
-  </script> -->
-  
-  <script>
     document.getElementById("download-btn").addEventListener("click", function () {
       const original = document.getElementById("capture-area");
   
@@ -446,8 +385,66 @@
         document.body.removeChild(wrapper); // Cleanup
       });
     });
+  </script> -->
+
+
+  <script>
+    document.getElementById("download-btn").addEventListener("click", function () {
+      const original = document.getElementById("screenshot-area");
+
+      // Clone the capture area only
+      const clone = original.cloneNode(true);
+      const wrapper = document.createElement("div");
+
+      // Set wrapper (which becomes the 720x720 canvas background)
+      wrapper.style.width = "720px";
+      wrapper.style.height = "720px";
+      wrapper.style.display = "flex";
+      wrapper.style.alignItems = "center";
+      wrapper.style.justifyContent = "center";
+      wrapper.style.position = "fixed";
+      wrapper.style.left = "-9999px";
+      wrapper.style.top = "0";
+      wrapper.style.overflow = "hidden";
+      wrapper.style.backgroundImage = "url('assets/home-page.gif')";
+      wrapper.style.backgroundSize = "cover";
+      wrapper.style.backgroundPosition = "center";
+
+      // Cleanup unwanted elements
+      clone.querySelectorAll(".no-screenshot, #download-btn").forEach(el => el.remove());
+
+      // Style clone to fill the wrapper cleanly
+      clone.style.display = "flex";
+      clone.style.flexDirection = "column";
+      clone.style.alignItems = "center";
+      clone.style.justifyContent = "center";
+      clone.style.width = "100%";
+      clone.style.height = "100%";
+      clone.style.padding = "0";
+      clone.style.margin = "0";
+      clone.style.boxSizing = "border-box";
+
+      wrapper.appendChild(clone);
+      document.body.appendChild(wrapper);
+
+      html2canvas(wrapper, {
+        width: 720,
+        height: 720,
+        backgroundColor: null,
+        scale: 1,
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "big-boss.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        document.body.removeChild(wrapper);
+      });
+    });
+
   </script>
-  
+
+
   <audio id="bg-music" autoplay loop>
     <source src="assets/music-for-page.mp3" type="audio/mpeg">
   </audio>
@@ -581,17 +578,17 @@
       appId: "1:357588305425:web:d1608265a0743fdda693b0",
       measurementId: "G-GE938RN0DB"
     };
-  
+
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-  
+
     let randomInterval1, randomInterval2, randomInterval3;
     let isRunning = false;
-  
+
     const digit = document.getElementById('digit1');
     const digit1 = document.getElementById('digit2');
     const digit2 = document.getElementById('digit3');
-  
+
     function startRandomRun() {
       if (isRunning) return;
       isRunning = true;
@@ -605,7 +602,7 @@
         digit2.textContent = Math.floor(Math.random() * 10);
       }, 105);
     }
-  
+
     function stopRandomRun(number) {
       clearInterval(randomInterval1);
       clearInterval(randomInterval2);
@@ -615,7 +612,7 @@
       digit1.textContent = number[1];
       digit2.textContent = number[2];
     }
-  
+
     function formatTime12hr(timeStr) {
       const [hour, minute] = timeStr.split(':');
       const h = parseInt(hour);
@@ -623,7 +620,7 @@
       const hr12 = h % 12 || 12;
       return `${hr12}:${minute} ${ampm}`;
     }
-  
+
     function formatCountdown(ms) {
       if (ms < 0) return "Result time passed";
       const totalSecs = Math.floor(ms / 1000);
@@ -632,18 +629,18 @@
       const secs = totalSecs % 60;
       return `${hrs > 0 ? hrs + 'h ' : ''}${mins}m ${secs}s`;
     }
-  
+
     function fetchLatestDraw() {
       const today = new Date().toISOString().split('T')[0];
       const now = new Date();
       const currentTime = now.toTimeString().slice(0, 5);
-  
+
       db.ref('results/' + today).once('value').then(snapshot => {
         const results = snapshot.val();
         const status = document.getElementById('result-status');
         const drawTimeEl = document.getElementById('drawTime');
         const remainingEl = document.getElementById('remainingTime');
-  
+
         if (!results) {
           drawTimeEl.innerText = '--:--';
           remainingEl.innerText = '--';
@@ -651,11 +648,11 @@
           startRandomRun();
           return;
         }
-  
+
         const entries = Object.values(results).sort((a, b) => a.time.localeCompare(b.time));
         let currentDraw = null;
         let nextDraw = null;
-  
+
         for (const entry of entries) {
           if (entry.time <= currentTime) {
             currentDraw = entry;
@@ -663,16 +660,16 @@
             nextDraw = entry;
           }
         }
-  
+
         const nowTime = now.getTime();
         const nextDrawTime = nextDraw
           ? new Date(`${today}T${nextDraw.time}:00`)
           : null;
-  
+
         const fiveMinBeforeNext = nextDrawTime
           ? new Date(nextDrawTime.getTime() - 5 * 60 * 1000)
           : null;
-  
+
         if (nextDraw) {
           // ✅ Always show upcoming draw time
           drawTimeEl.innerText = formatTime12hr(nextDraw.time);
@@ -685,7 +682,7 @@
           drawTimeEl.innerText = '--:--';
           remainingEl.innerText = '--';
         }
-  
+
         // 🎯 Logic for showing actual result or random digits
         if (currentDraw && (!nextDrawTime || now < fiveMinBeforeNext)) {
           stopRandomRun(currentDraw.number);
@@ -701,13 +698,13 @@
         document.getElementById('result-status').innerText = '❌ Error fetching result.';
       });
     }
-  
+
     document.addEventListener('DOMContentLoaded', () => {
       fetchLatestDraw();
       setInterval(fetchLatestDraw, 1000);
     });
   </script>
-  
+
 
 </body>
 
