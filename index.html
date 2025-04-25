@@ -305,14 +305,14 @@
     </nav>
   </header>
   <section class="main-section fade-in">
-    <div class="main-container">
+    <div id="capture-area" class="main-container">
       <div id="screenshot-area" class="download-icon">
         <div>
           <h1>BIG BOSS</h1>
         </div>
         <div class="draw-time-container">
           <div class="draw-box">Draw Time: <span id="drawTime">--:--</span></div>
-          <div class="draw-box">Remaining: <span id="remainingTime">--</span></div>
+          <div class="draw-box no-screenshot">Remaining: <span id="remainingTime">--</span></div>
         </div>
 
         <div class="blinking-row">
@@ -335,12 +335,12 @@
             </div>
           </div>
         </div>
-        <p id="result-status" style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
+        <p id="result-status" class="no-screenshot" style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
         <div style="margin-top: 10%;">
           <h2 style="color: white;font-size: 40px;">3 Digit Game</h2>
         </div>
       </div>
-      <button class="download-btn" onclick="downloadScreenshot()">Download</button>
+      <button class="download-btn" id="download-btn">Download</button>
       
 
     </div>
@@ -349,6 +349,7 @@
   <footer class="fade-in">
     <p>© 2025 Big Boss | All Rights Reserved</p>
   </footer>
+
   <!-- <script>
     const digit = document.getElementById('digit1');
     const digit1 = document.getElementById('digit2');
@@ -367,7 +368,8 @@
       digit2.textContent = randomDigit;
     }, 105);
   </script> -->
-  <script>
+  
+  <!-- <script>
     function downloadScreenshot() {
       const original = document.getElementById("screenshot-area");
 
@@ -407,7 +409,45 @@
         });
       }, 300);
     }
+  </script> -->
+  
+  <script>
+    document.getElementById("download-btn").addEventListener("click", function () {
+      const original = document.getElementById("capture-area");
+  
+      // Clone the area
+      const clone = original.cloneNode(true);
+      const wrapper = document.createElement("div");
+      wrapper.style.width = "720px";
+      wrapper.style.height = "727px";
+      wrapper.style.position = "fixed";
+      wrapper.style.left = "-9999px";
+      wrapper.style.top = "0";
+      wrapper.style.overflow = "hidden";
+      wrapper.style.backgroundColor = "#f9f9f9"; // Optional: background fix
+      document.body.appendChild(wrapper);
+  
+      // Remove unwanted elements from clone only
+      clone.querySelectorAll(".no-screenshot, #download-btn").forEach(el => el.remove());
+  
+      clone.style.width = "720px";
+      clone.style.height = "727px";
+      wrapper.appendChild(clone);
+  
+      html2canvas(clone, {
+        width: 720,
+        height: 727,
+        scale: 1
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "screenshot.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        document.body.removeChild(wrapper); // Cleanup
+      });
+    });
   </script>
+  
   <audio id="bg-music" autoplay loop>
     <source src="assets/music-for-page.mp3" type="audio/mpeg">
   </audio>
