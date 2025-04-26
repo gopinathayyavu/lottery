@@ -27,6 +27,7 @@
       justify-content: space-between;
       overflow-x: hidden;
       align-items: center;
+      font-family: 'Orbitron', sans-serif;
     }
 
     h1 {
@@ -71,7 +72,7 @@
       font-size: 18px;
     }
 
-    .blinking-border {
+    /* .blinking-border {
       display: flex;
       position: relative;
       padding: 40px;
@@ -107,7 +108,7 @@
       50% {
         border-color: transparent;
       }
-    }
+    } */
 
     .digit {
       font-size: 24px;
@@ -170,7 +171,55 @@
       z-index: 1;
     }
 
+    .game-type {
+      font-size: 40px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 0 0 8px currentColor;
+      animation: glow 1.5s ease-in-out infinite;
+    }
+
+    .game-type-cont {
+      margin: 10px;
+    }
+
+    button {
+      padding: 0.6rem 1.4rem;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 1rem;
+      box-shadow: 0 6px 16px rgba(0, 200, 255, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #38f9d7, #43e97b);
+      color: #003f5c;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 764px) {}
+
     @media (max-width: 480px) {
+
+      button {
+        margin-top: -20px;
+      }
+
+      .game-type {
+        font-size: 30px !important;
+      }
+
+      .game-type-cont {
+        margin: 10%;
+      }
+
       .main-section {
         margin-top: -10%;
       }
@@ -185,7 +234,20 @@
         margin-left: 30px;
         margin-top: 5%;
       }
+
+      .roller-container {
+        gap: 5px !important;
+      }
     }
+
+    .digit-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+
 
     @media (min-width: 481px) and (max-width: 1024px) {
       /* tablet styles */
@@ -292,6 +354,65 @@
       color: white;
       z-index: 1;
     }
+
+    .roller-container {
+      display: flex;
+      gap: 20px;
+    }
+
+    .digit-box {
+      background: #111;
+      border: 5px solid gold;
+      border-radius: 15px;
+      width: 100px;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      color: gold;
+      box-shadow: 0 0 30px gold;
+    }
+
+    /* .led-border {
+            border: 10px dotted gold;
+            border-radius: 15px;
+        } */
+
+    .led-border {
+      display: flex;
+      position: relative;
+      background-color: #000000;
+      border-radius: 15px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      margin: 10px;
+    }
+
+    .led-border::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 10px dotted gold;
+      border-radius: 15px;
+      animation: blinkBorder 0.6s infinite;
+    }
+
+    @keyframes blinkBorder {
+
+      0%,
+      100% {
+        border-color: gold;
+      }
+
+      50% {
+        border-color: transparent;
+      }
+    }
   </style>
 </head>
 
@@ -314,7 +435,7 @@
           <div class="draw-box">Draw Time: <span id="drawTime">--:--</span></div>
           <div class="draw-box no-screenshot">Remaining: <span id="remainingTime">--</span></div>
         </div>
-        <div class="blinking-row">
+        <!-- <div class="blinking-row">
           <div class="digit-container">
             <img height="50px" src="assets/A.png" alt="">
             <div class="blinking-border">
@@ -333,11 +454,33 @@
               <div id="digit3" class="digit">–</div>
             </div>
           </div>
+        </div> -->
+
+        <div class="roller-container">
+          <div class="digit-container">
+            <img height="50px" src="assets/A.png" alt="">
+            <div class="led-border">
+              <div class="digit-box" id="digit1">0</div>
+            </div>
+          </div>
+          <div class="digit-container">
+            <img height="50px" src="assets/B.png" alt="">
+            <div class="led-border">
+              <div class="digit-box" id="digit2">0</div>
+            </div>
+          </div>
+          <div class="digit-container">
+            <img height="50px" src="assets/C.png" alt="">
+            <div class="led-border">
+              <div class="digit-box" id="digit3">0</div>
+            </div>
+          </div>
         </div>
+
         <p id="result-status" class="no-screenshot"
           style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
-        <div style="margin-top: 10%;">
-          <h2 style="color: white;font-size: 40px;">3 Digit Game</h2>
+        <div class="game-type-cont">
+          <h2 class="game-type" style="color: white;font-size: 40px;">3 Digit Game</h2>
         </div>
       </div>
       <button class="download-btn" id="download-btn">Download</button>
