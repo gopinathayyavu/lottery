@@ -83,7 +83,7 @@
     #remainingTime {
       color: #ffdd57;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 25px;
     }
 
     /* .blinking-border {
@@ -194,11 +194,15 @@
     }
 
     .game-type-cont {
-      margin: 10px;
-      padding: 3px;
+      margin-top: 10px;
+      padding: 10px;
       background-color: black;
       border-radius: 20px;
-      width: 100%;
+      width: 100%; 
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
     }
 
     button {
@@ -255,6 +259,10 @@
 
       .roller-container {
         gap: 5px !important;
+      }
+
+      .game-type-cont{
+        padding: 6px;
       }
     }
 
@@ -498,6 +506,7 @@
       <p id="result-status" class="ignore-on-screenshot"
         style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
       <div class="game-type-cont">
+        <img  width="45px" height="40px" style="margin-bottom: 4px;" src="assets/bigboss-logo.png" alt="">
         <h2 class="game-type">3 Digit Game</h2>
       </div>
       <button class="ignore-on-screenshot" id="downloadBtn">Download</button>
