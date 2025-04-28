@@ -31,15 +31,27 @@
     }
 
     h1 {
-      font-size: 2.7rem;
+      font-size: 2rem;
       color: gold;
-      font-weight: bold;
+      font-weight: 800;
       letter-spacing: 1px;
-      text-shadow: 0 1px 4px rgba(0, 119, 204, 0.1);
-      display: inline-block;
-      border: 2px solid gold;
-      padding: 2px 6px;
+      margin-top: 13px;
+      /* text-shadow: 0 1px 4px rgba(0, 119, 204, 0.1); */
+      /* display: inline-block;
+      border: 2px solid gold; */
+      /* padding: 2px 6px; */
+      /* border-radius: 4px; */
+    }
+
+    .logo-cont{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: gold 2px solid;
+      width: 100%;
       border-radius: 4px;
+      padding: 2px 6px;
     }
 
     .draw-time-container {
@@ -54,15 +66,16 @@
     .draw-box {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #f1faee;
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 24px;
+      font-weight: 800;
       background-color: rgb(0, 0, 0);
       padding: 10px 20px;
       border-radius: 50px;
       backdrop-filter: blur(5px);
-      letter-spacing: 1px;
+      letter-spacing: 3px;
       text-align: center;
-      min-width: 180px;
+      min-width: 140%;
+      border: gold 2px solid;
     }
 
     #drawTime,
@@ -173,10 +186,10 @@
 
     .game-type {
       font-size: 40px;
-      color: white;
-      font-weight: bold;
+      color: blue;
+      font-weight: 800;
       text-shadow: 0 0 8px currentColor;
-      animation: glow 1.5s ease-in-out infinite;
+      letter-spacing: 1.5px;
     }
 
     .game-type-cont {
@@ -427,7 +440,8 @@
   </header>
   <section class="main-section fade-in">
     <div id="capture-container" class="main-container">
-      <div>
+      <div class="logo-cont">
+        <img width="50px" height="50px" src="/assets/bigboss-logo.png" alt="">
         <h1>BIG BOSS</h1>
       </div>
       <div class="draw-time-container">
@@ -479,7 +493,7 @@
       <p id="result-status" class="ignore-on-screenshot"
         style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
       <div class="game-type-cont">
-        <h2 class="game-type" style="color: white;font-size: 40px;">3 Digit Game</h2>
+        <h2 class="game-type">3 Digit Game</h2>
       </div>
       <button class="ignore-on-screenshot" id="downloadBtn">Download</button>
     </div>
