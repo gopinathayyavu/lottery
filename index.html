@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     html,
     body {
@@ -426,16 +425,15 @@
     </nav>
   </header>
   <section class="main-section fade-in">
-    <div id="capture-area" class="main-container">
-      <div id="screenshot-area" class="download-icon">
-        <div>
-          <h1>BIG BOSS</h1>
-        </div>
-        <div class="draw-time-container">
-          <div class="draw-box">Draw Time: <span id="drawTime">--:--</span></div>
-          <div class="draw-box no-screenshot">Remaining: <span id="remainingTime">--</span></div>
-        </div>
-        <!-- <div class="blinking-row">
+    <div id="capture-container" class="main-container">
+      <div>
+        <h1>BIG BOSS</h1>
+      </div>
+      <div class="draw-time-container">
+        <div class="draw-box">Draw Time: <span id="drawTime">--:--</span></div>
+        <div class="draw-box ignore-on-screenshot">Remaining: <span id="remainingTime">--</span></div>
+      </div>
+      <!-- <div class="blinking-row">
           <div class="digit-container">
             <img height="50px" src="assets/A.png" alt="">
             <div class="blinking-border">
@@ -456,138 +454,119 @@
           </div>
         </div> -->
 
-        <div class="roller-container">
-          <div class="digit-container">
-            <img height="50px" src="assets/A.png" alt="">
-            <div class="led-border">
-              <div class="digit-box" id="digit1">0</div>
-            </div>
-          </div>
-          <div class="digit-container">
-            <img height="50px" src="assets/B.png" alt="">
-            <div class="led-border">
-              <div class="digit-box" id="digit2">0</div>
-            </div>
-          </div>
-          <div class="digit-container">
-            <img height="50px" src="assets/C.png" alt="">
-            <div class="led-border">
-              <div class="digit-box" id="digit3">0</div>
-            </div>
+      <div class="roller-container">
+        <div class="digit-container">
+          <img height="50px" src="assets/A.png" alt="">
+          <div class="led-border">
+            <div class="digit-box" id="digit1">0</div>
           </div>
         </div>
-
-        <p id="result-status" class="no-screenshot"
-          style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
-        <div class="game-type-cont">
-          <h2 class="game-type" style="color: white;font-size: 40px;">3 Digit Game</h2>
+        <div class="digit-container">
+          <img height="50px" src="assets/B.png" alt="">
+          <div class="led-border">
+            <div class="digit-box" id="digit2">0</div>
+          </div>
+        </div>
+        <div class="digit-container">
+          <img height="50px" src="assets/C.png" alt="">
+          <div class="led-border">
+            <div class="digit-box" id="digit3">0</div>
+          </div>
         </div>
       </div>
-      <button class="download-btn" id="download-btn">Download</button>
 
-
+      <p id="result-status" class="ignore-on-screenshot"
+        style="margin-top: 5%; color: white; font-weight: bold;font-size: 20px;"></p>
+      <div class="game-type-cont">
+        <h2 class="game-type" style="color: white;font-size: 40px;">3 Digit Game</h2>
+      </div>
+      <button class="ignore-on-screenshot" id="download-btn">Download</button>
     </div>
   </section>
 
   <footer class="fade-in">
     <p>© 2023 Big Boss | All Rights Reserved</p>
   </footer>
-
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <!-- <script>
-    document.getElementById("download-btn").addEventListener("click", function () {
-      const original = document.getElementById("capture-area");
-  
-      // Clone the area
-      const clone = original.cloneNode(true);
-      const wrapper = document.createElement("div");
-      wrapper.style.width = "720px";
-      wrapper.style.height = "727px";
-      wrapper.style.position = "fixed";
-      wrapper.style.left = "-9999px";
-      wrapper.style.top = "0";
-      wrapper.style.overflow = "hidden";
-      wrapper.style.backgroundColor = "#f9f9f9"; // Optional: background fix
-      document.body.appendChild(wrapper);
-  
-      // Remove unwanted elements from clone only
-      clone.querySelectorAll(".no-screenshot, #download-btn").forEach(el => el.remove());
-  
-      clone.style.width = "720px";
-      clone.style.height = "727px";
-      wrapper.appendChild(clone);
-  
-      html2canvas(clone, {
-        width: 720,
-        height: 727,
-        scale: 1
-      }).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "screenshot.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-        document.body.removeChild(wrapper); // Cleanup
-      });
+    document.addEventListener('click', function () {
+      const userConfirmed = confirm('Do you want to save the image?');
+      if (userConfirmed) {
+        const container = document.getElementById('capture-container');
+        const ignoredElements = container.querySelectorAll('.ignore-on-screenshot');
+
+        // Hide elements that should not be captured
+        ignoredElements.forEach(el => {
+          el.style.visibility = 'hidden';
+        });
+
+        html2canvas(container, {
+          allowTaint: true,
+          useCORS: true,
+          scale: 3, // <--- Very important: 2x or 3x scaling for sharpness
+          backgroundColor: null // Transparent background if you want
+        }).then(canvas => {
+          const link = document.createElement('a');
+          link.download = 'screenshot.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+
+          // Restore hidden elements after screenshot
+          ignoredElements.forEach(el => {
+            el.style.visibility = 'visible';
+          });
+        });
+      }
     });
+
   </script> -->
 
-
   <script>
-    document.getElementById("download-btn").addEventListener("click", function () {
-      const original = document.getElementById("screenshot-area");
+    document.addEventListener('click', function () {
+      const userConfirmed = confirm('Do you want to save the image?');
+      if (userConfirmed) {
+        const container = document.getElementById('capture-container');
+        const ignoredElements = container.querySelectorAll('.ignore-on-screenshot');
 
-      // Clone the capture area only
-      const clone = original.cloneNode(true);
-      const wrapper = document.createElement("div");
+        // Hide elements that should not be captured
+        ignoredElements.forEach(el => {
+          el.style.visibility = 'hidden';
+        });
 
-      // Set wrapper (which becomes the 720x720 canvas background)
-      wrapper.style.width = "720px";
-      wrapper.style.height = "720px";
-      wrapper.style.display = "flex";
-      wrapper.style.alignItems = "center";
-      wrapper.style.justifyContent = "center";
-      wrapper.style.position = "fixed";
-      wrapper.style.left = "-9999px";
-      wrapper.style.top = "0";
-      wrapper.style.overflow = "hidden";
-      wrapper.style.backgroundImage = "url('assets/home-page.gif')";
-      wrapper.style.backgroundSize = "cover";
-      wrapper.style.backgroundPosition = "center";
+        html2canvas(container, {
+          allowTaint: true,
+          useCORS: true,
+          scale: 3,
+          backgroundColor: null
+        }).then(canvas => {
+          // Create a new canvas with 720x720 size
+          const finalCanvas = document.createElement('canvas');
+          finalCanvas.width = 720;
+          finalCanvas.height = 720;
+          const ctx = finalCanvas.getContext('2d');
 
-      // Cleanup unwanted elements
-      clone.querySelectorAll(".no-screenshot, #download-btn").forEach(el => el.remove());
+          // Fill with transparent (optional)
+          ctx.fillStyle = 'transparent';
+          ctx.fillRect(0, 0, 720, 720);
 
-      // Style clone to fill the wrapper cleanly
-      clone.style.display = "flex";
-      clone.style.flexDirection = "column";
-      clone.style.alignItems = "center";
-      clone.style.justifyContent = "center";
-      clone.style.width = "100%";
-      clone.style.height = "100%";
-      clone.style.padding = "0";
-      clone.style.margin = "0";
-      clone.style.boxSizing = "border-box";
+          // Draw the original captured canvas scaled into the 720x720 canvas
+          ctx.drawImage(canvas, 0, 0, 720, 720);
 
-      wrapper.appendChild(clone);
-      document.body.appendChild(wrapper);
+          // Now download the resized final canvas
+          const link = document.createElement('a');
+          link.download = 'BigBoss_Result.png';
+          link.href = finalCanvas.toDataURL('image/png');
+          link.click();
 
-      html2canvas(wrapper, {
-        width: 720,
-        height: 720,
-        backgroundColor: null,
-        scale: 1,
-        useCORS: true
-      }).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "big-boss.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-        document.body.removeChild(wrapper);
-      });
+          // Restore hidden elements after screenshot
+          ignoredElements.forEach(el => {
+            el.style.visibility = 'visible';
+          });
+        });
+      }
     });
 
   </script>
-
-
   <audio id="bg-music" autoplay loop>
     <source src="assets/music-for-page.mp3" type="audio/mpeg">
   </audio>
