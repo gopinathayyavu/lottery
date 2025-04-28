@@ -480,7 +480,7 @@
       <div class="game-type-cont">
         <h2 class="game-type" style="color: white;font-size: 40px;">3 Digit Game</h2>
       </div>
-      <!-- <button class="ignore-on-screenshot" id="download-btn">Download</button> -->
+      <button class="ignore-on-screenshot" id="downloadBtn">Download</button>
     </div>
   </section>
 
@@ -488,51 +488,19 @@
     <p>© 2023 Big Boss | All Rights Reserved</p>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <!-- <script>
-    document.addEventListener('click', function () {
-      const userConfirmed = confirm('Do you want to save the image?');
-      if (userConfirmed) {
-        const container = document.getElementById('capture-container');
-        const ignoredElements = container.querySelectorAll('.ignore-on-screenshot');
-
-        // Hide elements that should not be captured
-        ignoredElements.forEach(el => {
-          el.style.visibility = 'hidden';
-        });
-
-        html2canvas(container, {
-          allowTaint: true,
-          useCORS: true,
-          scale: 3, // <--- Very important: 2x or 3x scaling for sharpness
-          backgroundColor: null // Transparent background if you want
-        }).then(canvas => {
-          const link = document.createElement('a');
-          link.download = 'screenshot.png';
-          link.href = canvas.toDataURL('image/png');
-          link.click();
-
-          // Restore hidden elements after screenshot
-          ignoredElements.forEach(el => {
-            el.style.visibility = 'visible';
-          });
-        });
-      }
-    });
-
-  </script> -->
-
+  
   <script>
-    document.addEventListener('click', function () {
+    document.getElementById('downloadBtn').addEventListener('click', function () {
       const userConfirmed = confirm('Do you want to save the image?');
       if (userConfirmed) {
         const container = document.getElementById('capture-container');
         const ignoredElements = container.querySelectorAll('.ignore-on-screenshot');
-
+  
         // Hide elements that should not be captured
         ignoredElements.forEach(el => {
           el.style.visibility = 'hidden';
         });
-
+  
         html2canvas(container, {
           allowTaint: true,
           useCORS: true,
@@ -544,29 +512,29 @@
           finalCanvas.width = 720;
           finalCanvas.height = 720;
           const ctx = finalCanvas.getContext('2d');
-
-          // Fill with transparent (optional)
+  
+          // Fill with transparent background (optional)
           ctx.fillStyle = 'transparent';
           ctx.fillRect(0, 0, 720, 720);
-
-          // Draw the original captured canvas scaled into the 720x720 canvas
+  
+          // Draw captured canvas onto final 720x720 canvas
           ctx.drawImage(canvas, 0, 0, 720, 720);
-
-          // Now download the resized final canvas
+  
+          // Download the final resized image
           const link = document.createElement('a');
           link.download = 'BigBoss_Result.png';
           link.href = finalCanvas.toDataURL('image/png');
           link.click();
-
-          // Restore hidden elements after screenshot
+  
+          // Restore hidden elements
           ignoredElements.forEach(el => {
             el.style.visibility = 'visible';
           });
         });
       }
     });
-
   </script>
+  
   <audio id="bg-music" autoplay loop>
     <source src="assets/music-for-page.mp3" type="audio/mpeg">
   </audio>
